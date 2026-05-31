@@ -1,0 +1,1325 @@
+
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CDIAPs - Fundació L'Espiga</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+    :root {
+        --color-principal: #de6225;
+        --color-secundari: #FDF6E3;
+        --color-destacat: #c55520;
+        --color-text: #000000;
+        --tipografia-principal: 'Segoe UI', sans-serif;
+        --textura-fons: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: var(--tipografia-principal);
+        background-color: var(--color-secundari);
+        color: var(--color-text);
+        background-image: var(--textura-fons);
+        background-blend-mode: multiply;
+        line-height: 1.6;
+        position: relative;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        font-size: clamp(14px, 4vw, 16px);
+    }
+
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(rgba(255, 255, 255, 0.1), transparent 80%);
+        z-index: -2;
+    }
+
+    .progres-desplacament {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-principal), #e87a3f, var(--color-destacat));
+        z-index: 1000;
+        transition: width 0.1s ease;
+        box-shadow: 0 2px 4px rgba(222, 98, 37, 0.3);
+    }
+
+    .animacio-desplacament {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animacio-desplacament.animar {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .animacio-desplacament-esquerra {
+        opacity: 0;
+        transform: translateX(-50px);
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+        .titol-principal {
+        color: var(--color-principal);
+        font-size: clamp(2rem, 6vw, 2.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+        padding-bottom: 1rem;
+    }
+
+    .titol-principal::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-principal), #e87a3f);
+        border-radius: 2px;
+    }
+    .animacio-desplacament-esquerra.animar {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .animacio-desplacament-dreta {
+        opacity: 0;
+        transform: translateX(50px);
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animacio-desplacament-dreta.animar {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .animacio-desplacament-escala {
+        opacity: 0;
+        transform: scale(0.8);
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animacio-desplacament-escala.animar {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .barra-contacte {
+        background: linear-gradient(135deg, #c55520 0%, #b54a1c 100%);
+        color: white;
+        padding: 8px 0;
+        font-size: clamp(0.8rem, 3vw, 0.9rem);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        z-index: 1001;
+    }
+
+    .contingut-barra-contacte {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+    }
+
+    .informacio-contacte {
+        display: flex;
+        gap: clamp(15px, 4vw, 30px);
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .element-contacte {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        padding: 8px 12px;
+        border-radius: 4px;
+        min-height: 44px;
+    }
+
+    .element-contacte:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-1px);
+    }
+
+    .element-contacte i {
+        color: #f5a573;
+        font-size: 1rem;
+        min-width: 20px;
+    }
+
+    .element-contacte a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+        display: flex;
+        align-items: center;
+    }
+
+    .element-contacte a:hover {
+        color: #f5a573;
+    }
+
+    .enllacos-socials {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .enllac-social {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 1.1rem;
+    }
+
+    .enllac-social:hover {
+        background: #f5a573;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    header {
+        background: #e87a3f;
+        color: white;
+        padding: 1rem 0;
+        position: relative;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+    }
+
+    main {
+        flex: 1;
+        width: 100%;
+    }
+
+    .contingut-capcalera {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        flex-wrap: wrap;
+        position: relative;
+    }
+
+    .inici, .presentacio, .noticies, .serveis, .col·labora, .transparencia, .contacta {
+        transition: transform 0.3s ease;
+    }
+
+    .inici:hover, .presentacio:hover, .noticies:hover, .serveis:hover,
+    .col·labora:hover, .transparencia:hover, .contacta:hover {
+        transform: scale(1.1);
+    }
+
+    .logo {
+        transition: transform 0.3s ease;
+        z-index: 1001;
+    }
+
+    .logo:hover {
+        transform: scale(1.1);
+    }
+
+    .logo-espiga {
+        display: block;
+        height: clamp(50px, 10vw, 70px);
+        width: auto;
+        border-radius: 10px;
+        background-color: #ffffff;
+    }
+
+    .logo-espiga img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 2rem;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        min-width: 44px;
+        min-height: 44px;
+        border-radius: 8px;
+        z-index: 1001;
+    }
+
+    .menu-toggle:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .menu-toggle:active {
+        transform: scale(0.95);
+    }
+
+    nav {
+        position: static;
+    }
+
+    nav ul {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    nav ul.show {
+        display: flex !important;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        font-size: clamp(1rem, 3vw, 1.1rem);
+        padding: 0.8rem 1.2rem;
+        transition: all 0.3s ease;
+        border-radius: 6px;
+        border: 1px solid transparent;
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+    }
+
+    nav a:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .desplacar-a-dalt {
+        position: fixed;
+        bottom: clamp(20px, 5vh, 30px);
+        right: clamp(20px, 4vw, 30px);
+        width: clamp(45px, 10vw, 50px);
+        height: clamp(45px, 10vw, 50px);
+        background: linear-gradient(135deg, var(--color-principal), var(--color-destacat));
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: clamp(1rem, 4vw, 1.2rem);
+        box-shadow: 0 4px 12px rgba(222, 98, 37, 0.3);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .desplacar-a-dalt.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .desplacar-a-dalt:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(222, 98, 37, 0.4);
+    }
+
+    .desplacar-a-dalt:active {
+        transform: scale(0.95);
+    }
+
+    /* Estilos específicos de CDIAPs.html */
+    .seccio-contingut {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: clamp(1.5rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem);
+    }
+
+    .qui-som {
+        background: white;
+        border-radius: 15px;
+        padding: clamp(1.5rem, 4vw, 3rem);
+        margin: 3rem 0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        border-left: 5px solid var(--color-principal);
+    }
+
+    .qui-som h2 {
+        color: var(--color-destacat);
+        font-size: clamp(1.8rem, 6vw, 2.5rem);
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .qui-som h2 i {
+        color: var(--color-principal);
+        font-size: 2rem;
+    }
+
+    .qui-som p {
+        font-size: clamp(0.95rem, 3vw, 1.1rem);
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+        color: #555;
+    }
+
+    .destacat-text {
+        background: linear-gradient(135deg, var(--color-principal), #e87a3f);
+        color: white;
+        padding: clamp(1rem, 3vw, 1.5rem);
+        border-radius: 10px;
+        font-weight: 600;
+        margin: 2rem 0;
+        box-shadow: 0 5px 15px rgba(222, 98, 37, 0.3);
+        font-size: clamp(0.9rem, 3vw, 1rem);
+    }
+
+    .seccio-ubicacio {
+        margin: 2rem 0;
+        background: transparent;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .capçalera-ubicacio {
+        background: linear-gradient(135deg, var(--color-principal), var(--color-destacat));
+        color: white;
+        padding: clamp(1rem, 3vw, 2rem);
+        text-align: center;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+    }
+
+    .capçalera-ubicacio h3 {
+        font-size: clamp(1.5rem, 5vw, 2.2rem);
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .capçalera-ubicacio i {
+        font-size: clamp(1.2rem, 4vw, 1.8rem);
+    }
+
+    .galeria-imatges {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        padding: clamp(0.5rem, 2vw, 1rem);
+    }
+
+    .imatge-galeria {
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .imatge-galeria:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .imatge-galeria img {
+        width: 100%;
+        height: clamp(180px, 30vh, 250px);
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .imatge-galeria:hover img {
+        transform: scale(1.05);
+    }
+
+    .overlay-imatge {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0,0,0,0.8));
+        color: white;
+        padding: 0.8rem;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+    }
+
+    .imatge-galeria:hover .overlay-imatge {
+        transform: translateY(0);
+    }
+
+    .info-adicional {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        border-radius: 15px;
+        padding: clamp(1.5rem, 4vw, 3rem);
+        margin: 3rem 0;
+        border-left: 5px solid var(--color-principal);
+    }
+
+    .info-adicional h3 {
+        color: var(--color-destacat);
+        font-size: clamp(1.4rem, 4vw, 1.8rem);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .info-adicional i {
+        color: var(--color-principal);
+    }
+
+    .info-adicional p {
+        font-size: clamp(0.95rem, 3vw, 1.1rem);
+        line-height: 1.7;
+        color: #555;
+    }
+
+    /* Marcs per a les fotos del CDIAP Baix Penedès */
+    .marcs-fotos-baixpenedes {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin-top: 1rem;
+        padding: 0.5rem;
+    }
+
+    .marc-foto-petit {
+        background: white;
+        border-radius: 16px;
+        padding: 0;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-align: center;
+    }
+
+    .marc-foto-petit:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .marc-foto-petit img {
+        width: 100%;
+        height: 290px;
+        object-fit: cover;
+        display: block;
+        margin: 0;
+        padding: 0;
+    }
+
+    .marc-foto-petit p {
+        font-size: 0.9rem;
+        color: var(--color-destacat);
+        margin: 0;
+        padding: 12px 8px;
+        background: white;
+        border-radius: 0 0 16px 16px;
+    }
+
+    /* MARCO BLANC UNIFICADO para "Els nostres centres" */
+    .marc-centres-unificat {
+        background: white;
+        border-radius: 25px;
+        padding: clamp(1.5rem, 4vw, 3rem);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        margin: 3rem 0;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .marc-centres-unificat:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .titol-seccio-centres {
+        color: var(--color-destacat);
+        font-size: clamp(2rem, 6vw, 2.8rem);
+        margin-bottom: 2rem;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        border-bottom: 2px solid rgba(222, 98, 37, 0.3);
+        padding-bottom: 1rem;
+    }
+
+    .titol-seccio-centres i {
+        color: var(--color-principal);
+        font-size: 2rem;
+    }
+
+    /* Ajust responsiu */
+    @media (max-width: 768px) {
+        .marc-centres-unificat {
+            padding: 1.5rem;
+        }
+        .marcs-fotos-baixpenedes {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .marc-foto-petit img {
+            height: 200px;
+        }
+        .galeria-imatges {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .animacio-escalonada {
+        transition-delay: 0.1s;
+    }
+
+    .animacio-escalonada:nth-child(2) { transition-delay: 0.2s; }
+    .animacio-escalonada:nth-child(3) { transition-delay: 0.3s; }
+    .animacio-escalonada:nth-child(4) { transition-delay: 0.4s; }
+    .animacio-escalonada:nth-child(5) { transition-delay: 0.5s; }
+    .animacio-escalonada:nth-child(6) { transition-delay: 0.6s; }
+
+    /* Footer */
+    #peu-pagina-espiga {
+        background: linear-gradient(135deg, #de6225 0%, #c55520 50%, #b54a1c 100%);
+        color: white;
+        font-family: 'Segoe UI', sans-serif;
+        padding: clamp(40px, 10vh, 60px) clamp(15px, 4vw, 20px) clamp(15px, 4vh, 20px);
+        position: relative;
+        overflow: hidden;
+        height: auto;
+        margin-top: auto;
+    }
+
+    #peu-pagina-espiga::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-principal), #e87a3f, var(--color-destacat));
+        box-shadow: 0 2px 8px rgba(222, 98, 37, 0.4);
+    }
+
+    .contenidor-peu-pagina-espiga {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: auto;
+        gap: clamp(25px, 6vw, 40px);
+        position: relative;
+        z-index: 1;
+    }
+
+    .bloc-peu-pagina-espiga {
+        flex: 1 1 250px;
+        min-width: 250px;
+        position: relative;
+    }
+
+    .bloc-peu-pagina-espiga h3 {
+        color: white;
+        margin-bottom: 20px;
+        font-size: clamp(1.2rem, 4vw, 1.4rem);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        position: relative;
+        padding-bottom: 12px;
+    }
+
+    .bloc-peu-pagina-espiga h3::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 2px;
+        background: linear-gradient(90deg, #f5a573, #e87a3f);
+        border-radius: 2px;
+    }
+
+    .bloc-peu-pagina-espiga ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .bloc-peu-pagina-espiga ul li {
+        margin-bottom: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .bloc-peu-pagina-espiga a {
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 0;
+        border-radius: 4px;
+        position: relative;
+        min-height: 44px;
+    }
+
+    .bloc-peu-pagina-espiga a:hover {
+        color: #f5a573;
+        background: rgba(255, 255, 255, 0.05);
+        padding-left: 8px;
+    }
+
+    .controls-text-espiga {
+        display: flex;
+        gap: 8px;
+        margin-top: 15px;
+        flex-wrap: wrap;
+    }
+
+    .controls-text-espiga button {
+        background: linear-gradient(135deg, #b54a1c, #a0421a);
+        border: none;
+        color: white;
+        padding: clamp(8px, 3vw, 10px) clamp(10px, 4vw, 14px);
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: clamp(0.9rem, 3vw, 1rem);
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(181, 74, 28, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 45px;
+        justify-content: center;
+        min-height: 44px;
+    }
+
+    .controls-text-espiga button:hover {
+        background: linear-gradient(135deg, #c55520, #b54a1c);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(197, 85, 32, 0.4);
+    }
+
+    .peu-pagina-inferior-espiga {
+        text-align: center;
+        padding-top: 30px;
+        margin-top: 40px;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        font-size: clamp(0.85rem, 3vw, 0.95rem);
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .peu-pagina-inferior-espiga a {
+        color: #f5a573;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        display: inline-block;
+        padding: 8px 4px;
+    }
+
+    .peu-pagina-inferior-espiga a:hover {
+        color: #ffc299;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+    }
+
+    /* Media Queries - Barra de contacto */
+    @media (max-width: 768px) {
+        .barra-contacte {
+            padding: 6px 0;
+        }
+        .contingut-barra-contacte {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 10px;
+            gap: 5px;
+        }
+        .informacio-contacte {
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+            flex: 1;
+            justify-content: flex-start;
+        }
+        .element-contacte {
+            padding: 4px 6px;
+            min-height: 36px;
+        }
+        .element-contacte i {
+            font-size: 0.9rem;
+        }
+        .element-contacte a {
+            font-size: 0.8rem;
+        }
+        .enllacos-socials {
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .enllac-social {
+            width: 32px;
+            height: 32px;
+            font-size: 0.9rem;
+        }
+        .menu-toggle {
+            display: block;
+        }
+        nav {
+            width: 100%;
+            order: 3;
+        }
+        nav ul {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            background: #dd5510;
+            border-radius: 12px;
+            margin-top: 1rem;
+            padding: 0.5rem 0;
+            position: relative;
+            z-index: 999;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        nav ul.show {
+            display: flex !important;
+        }
+        nav li {
+            width: 100%;
+            text-align: center;
+        }
+        nav a {
+            justify-content: center;
+            padding: 1rem;
+            border-radius: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        nav li:last-child a {
+            border-bottom: none;
+        }
+        .contenidor-peu-pagina-espiga {
+            flex-direction: column;
+        }
+        .bloc-peu-pagina-espiga {
+            width: 100%;
+            text-align: center;
+            min-width: 100%;
+        }
+        .bloc-peu-pagina-espiga h3 {
+            justify-content: center;
+        }
+        .bloc-peu-pagina-espiga h3::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .bloc-peu-pagina-espiga ul li {
+            text-align: center;
+        }
+        .bloc-peu-pagina-espiga a {
+            justify-content: center;
+        }
+        .controls-text-espiga {
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .contingut-barra-contacte { padding: 0 8px; }
+        .informacio-contacte { gap: 5px; }
+        .element-contacte { padding: 4px 5px; }
+        .element-contacte i { font-size: 0.85rem; min-width: 18px; }
+        .element-contacte a { font-size: 0.75rem; }
+        .enllac-social { width: 30px; height: 30px; font-size: 0.85rem; }
+    }
+
+    /* Estilos para el bloque de información dentro del marco */
+    .marc-informacio-cdiap {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 2rem 1rem 1rem 1rem;
+        margin: 2rem 0 1rem 0;
+    }
+
+    .marc-informacio-cdiap h3 {
+        color: var(--color-principal);
+        font-size: 1.5rem;
+        margin: 1.5rem 0 1rem 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-left: 4px solid var(--color-principal);
+        padding-left: 1rem;
+    }
+
+    .marc-informacio-cdiap h3:first-of-type {
+        margin-top: 0;
+    }
+
+    .marc-informacio-cdiap p {
+        margin-bottom: 1rem;
+        line-height: 1.8;
+    }
+
+    .marc-informacio-cdiap ul {
+        margin: 1rem 0 1rem 2rem;
+        line-height: 1.8;
+    }
+
+    .marc-informacio-cdiap li {
+        margin-bottom: 0.5rem;
+    }
+
+        .enllac-carta-serveis {
+        display: inline-block;
+        background: linear-gradient(135deg, var(--color-principal), var(--color-destacat));
+        color: white;
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(222, 98, 37, 0.3);
+        margin-top: 1rem;
+        font-size: clamp(0.9rem, 3vw, 1rem);
+    }
+
+    .enllac-carta-serveis:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(222, 98, 37, 0.4);
+        background: linear-gradient(135deg, #e87a3f, var(--color-principal));
+    }
+
+      .carta-serveis {
+        background: linear-gradient(135deg, var(--color-destacat), #b54a1c);
+        color: white;
+        padding: clamp(1.5rem, 4vw, 2rem);
+        border-radius: 15px;
+        text-align: center;
+        margin: 3rem 0;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .carta-serveis p {
+        font-size: clamp(1rem, 4vw, 1.2rem);
+        margin-bottom: 1rem;
+    }
+
+    .carta-serveis .enllac-carta {
+        color: #f5a573;
+        font-weight: 700;
+        text-decoration: none;
+        font-size: clamp(1.1rem, 4vw, 1.3rem);
+        transition: all 0.3s ease;
+    }
+
+    .carta-serveis .enllac-carta:hover {
+        color: white;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+    }
+
+</style>
+</head>
+<body>
+<div class="progres-desplacament"></div>
+<button class="desplacar-a-dalt" onclick="desplacarADalt()">
+  <i class="fas fa-arrow-up"></i>
+</button>
+<div class="barra-contacte">
+  <div class="contingut-barra-contacte">
+    <div class="informacio-contacte">
+      <div class="element-contacte">
+        <i class="fas fa-phone"></i>
+        <a href="tel:938172748">93 817 27 48</a>
+      </div>
+      <div class="element-contacte">
+        <i class="fas fa-envelope"></i>
+        <a href="mailto:espiga@fundaciolespiga.cat">espiga@fundaciolespiga.cat</a>
+      </div>
+    </div>
+    <div class="enllacos-socials">
+      <a href="https://www.facebook.com/p/CENTRE-OCUPACIONAL-LESPIGA-100083339680773/" target="_blank" class="enllac-social" aria-label="Facebook">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href="https://www.instagram.com/fundacioespiga/" target="_blank" class="enllac-social" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+  </div>
+</div>
+<header>
+  <div class="contingut-capcalera">
+    <a href="index.html">
+      <div class="logo">
+        <img src="cdiap-logo.png" alt="Logo Fundació L'Espiga" class="logo-espiga">
+      </div>
+    </a>
+    <button class="menu-toggle" onclick="toggleMenu()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <nav class="apartats">
+        <ul id="menu">
+          <li class="inici"><a href="index.html">Inici</a></li>
+          <li class="presentacio"><a href="presentacio.html">Presentació</a></li>
+           <li class="serveis"><a href="serveis.html">Serveis</a></li>
+          <li class="noticies"><a href="noticies.html">Notícies</a></li>
+          <li class="col·labora"><a href="col·labora.html">Col·labora</a></li>
+          <li class="transparencia"><a href="transparencia.html">Transparència</a></li>
+          <li class="contacta"><a href="contacta.html">Contacta</a></li>
+        </ul>
+      </nav>
+  </div>
+</header>
+<main>
+    <br><br>
+     <div class="animacio-desplacament">
+      <h1 class="titol-principal">CDIAPs</h1>
+    </div>
+ <div class="seccio-contingut">
+    <!-- MARCO 1: QUI SOM (separado) -->
+    <section class="qui-som animacio-desplacament">
+        <h2><i class="fas fa-heart"></i>Qui Som</h2>
+        <p>Els Centres de Desenvolupament Infantil i Atenció Precoç (CDIAP) són serveis universals i gratuïts adreçats a infants de 0 a 6 anys que presenten dificultats en el seu desenvolupament o es troben en situació de risc.</p>
+        <p>La nostra finalitat és afavorir el desenvolupament global de l’infant i donar suport a la seva família promovent el seu benestar i inclusió en els diferents entorns.</p>
+        <div class="destacat-text animacio-desplacament-esquerra">
+            <i class="fas fa-info-circle"></i>
+            Són serveis concertats amb el Departament de Drets Socials de la Generalitat de Catalunya.
+        </div>
+        <p>La Fundació l'Espiga té concertats dos CDIAPs:</p>
+        <p><strong>CDIAP L'Espiga</strong> amb número de registre S01256, ubicat a la Carretera de Moja, Número 9 de Vilafranca del Penedès. Dona atenció a la comarca de l'Alt Penedès i compta amb dos Serveis de Suport a l'Atenció Precoç, ubicats a Sant Sadurní d'Anoia, amb número de registre S09092 i a Gelida amb número de registre S08548.</p>
+    </section>
+
+    <!-- MARCO 2: ELS NOSTRES CENTRES (TODO dentro de un solo marco blanco) -->
+    <div class="marc-centres-unificat animacio-desplacament">
+        <h2 class="titol-seccio-centres"><i class="fas fa-map-marker-alt"></i> Els nostres centres</h2>
+        
+        <section class="seccio-ubicacio">
+            <div class="capçalera-ubicacio">
+                <h3><i class="fas fa-map-marker-alt"></i> VILAFRANCA DEL PENEDÈS</h3>
+            </div>
+            <div class="galeria-imatges">
+                <div class="imatge-galeria animacio-desplacament-esquerra animacio-escalonada">
+                    <img src="cdiapvilafrancafoto1.jpg" alt="Sala de teràpia CDIAP Vilafranca">
+                    <div class="overlay-imatge">
+                        <p style="color: #ffffff;">Sala de atenció terapèutica</p>
+                    </div>
+                </div>
+                <div class="imatge-galeria animacio-desplacament-dreta animacio-escalonada">
+                    <img src="cdiapvilafrancafoto2.jpg" alt="Sala de reunions CDIAP Vilafranca">
+                    <div class="overlay-imatge">
+                        <p style="color: #ffffff;">Sala de fisioteràpia</p>
+                    </div>
+                </div>
+                <div class="imatge-galeria animacio-desplacament-esquerra animacio-escalonada">
+                    <img src="cdiapvilafrancafoto3.jpg" alt="Recepció CDIAP Vilafranca">
+                    <div class="overlay-imatge">
+                        <p style="color: #ffffff;">Àrea de recepció</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="seccio-ubicacio">
+            <div class="capçalera-ubicacio">
+                <h3><i class="fas fa-map-marker-alt"></i> GELIDA</h3>
+            </div>
+            <div class="galeria-imatges">
+                <div class="imatge-galeria animacio-desplacament-esquerra animacio-escalonada">
+                    <img src="cdiapgelidafoto1.jpg" alt="Sala principal CDIAP Gelida">
+                    <div class="overlay-imatge">
+                        <p style="color: #ffffff;">Sala de atenció terapèutica</p>
+                    </div>
+                </div>
+                <div class="imatge-galeria animacio-desplacament-dreta animacio-escalonada">
+                    <img src="cdiapgelidafoto2.jpg" alt="Espai de treball CDIAP Gelida">
+                    <div class="overlay-imatge">
+                        <p style="color: #ffffff;">Sala de fisioteràpia</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="seccio-ubicacio">
+            <div class="capçalera-ubicacio">
+                <h3><i class="fas fa-map-marker-alt"></i> SANT SADURNÍ D'ANOIA</h3>
+            </div>
+            <div class="galeria-imatges">
+                <div class="imatge-galeria animacio-desplacament-esquerra animacio-escalonada">
+                    <img src="cdiapsantsadurnifoto1.jpg" alt="Sala de jocs CDIAP Sant Sadurní">
+                    <div class="overlay-imatge">
+                        <p style="color: #ffffff;">Sala de fisioteràpia</p>
+                    </div>
+                </div>
+                <div class="imatge-galeria animacio-desplacament animacio-escalonada">
+                    <img src="cdiapsantsadurnifoto2.jpg" alt="Espai multisensorial CDIAP Sant Sadurní">
+                    <div class="overlay-imatge">
+                        <p style="color: #ffffff;">Sala d'espera</p>
+                    </div>
+                </div>
+                <div class="imatge-galeria animacio-desplacament-dreta animacio-escalonada">
+                    <img src="cdiapsantsadurnifoto3.jpg" alt="Zona de descans CDIAP Sant Sadurní">
+                    <div class="overlay-imatge">
+                        <p style="color: #ffffff;">Sala de atenció terapèutica</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="seccio-ubicacio">
+            <div class="capçalera-ubicacio">
+                <h3><i class="fas fa-map-marker-alt"></i> EL VENDRELL - CDIAP Baix Penedès</h3>
+            </div>
+            <div class="marcs-fotos-baixpenedes">
+                <div class="imatge-galeria animacio-desplacament animacio-escalonada">
+                    <img src="foto vendrell 1.jpg" alt="Instal·lacions CDIAP Baix Penedès">
+                    <div class="overlay-imatge">
+                        <p style="color: #ffffff;">Sala de atenció terapèutica</p>
+                    </div>
+                </div>
+                <div class="imatge-galeria animacio-desplacament animacio-escalonada">
+                    <img src="vendrell foto 2.jpg" alt="Sala d'atenció CDIAP Baix Penedès">
+                    <div class="overlay-imatge">
+                        <p style="color: #ffffff;">Sala de fisioteràpia</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+     <div class="marc-informacio-cdiap animacio-desplacament">
+        <h3><i class="fas fa-users"></i> A qui va adreçat:</h3>
+        <p>Els nostres CDIAPs s'adrecen a infants de 0 a 6 anys que presenten o poden presentar dificultats en diferents àrees del seu desenvolupament: comunicació i llenguatge, desenvolupament motriu, desenvolupament cognitiu i de l'aprenentatge i/o desenvolupament emocional i relacional. També s'adreça a aquelles famílies que tenen dubtes o preocupacions sobre la criança i el desenvolupament dels seus fills o filles.</p>
+
+        <h3><i class="fas fa-user-md"></i> L'equip professional:</h3>
+        <p>El CDIAP compta amb un equip interdisciplinari de professionals especialitzats en el desenvolupament infantil i l'atenció a la petita infància. Aquest equip està format per professionals dels àmbits de la fisioteràpia, psicologia, psicopedagogia, logopèdia, treball social i neuropediatria.</p>
+        <p>L'equip professional treballa de manera coordinada per oferir una atenció global i personalitzada, adaptada a les necessitats de cada infant i a la seva família.</p>
+
+        <h3><i class="fas fa-hand-holding-heart"></i> Què oferim:</h3>
+        <ul>
+            <li>Avaluació global del desenvolupament de l'infant i diagnòstic interdisciplinar</li>
+            <li>Atenció terapèutica a l'infant</li>
+            <li>Suport i acompanyament a les famílies</li>
+            <li>Coordinació amb altres serveis educatius, sanitaris i socials (escola bressol, escola, pediatria, serveis socials, etc.)</li>
+            <li>Suport i orientació als professionals de l'educació infantil en les etapes de 0 a 3 pel que fa als aspectes del desenvolupament</li>
+            <li>Prevenció i detecció precoç dels trastorns de desenvolupament i situacions de risc en la població infantil fins als sis anys</li>
+        </ul>
+
+        <h3><i class="fas fa-chalkboard-user"></i> Com treballem:</h3>
+        <p>La intervenció es basa en una mirada integral de l'infant i la seva família, respectant els seus ritmes i potenciant les seves capacitats. El treball es realitza des d'un enfocament biopsicosocial, amb una clara orientació cap al suport a les capacitats parentals i al vincle familiar, mitjançant pràctiques basades en l'evidència científica i l'ètica.</p>
+    </div>
+     <section class="carta-serveis animacio-desplacament-escala">
+      <p>Per a més informació podeu veure la <a href="03 CARTA DE SERVEIS CDIAPs Revisió 2025.pdf" class="enllac-carta" target="_blank">Carta de Serveis</a> del nostres CDIAPs</p>
+    </section>
+  </div>
+</main>
+<footer id="peu-pagina-espiga" class="animacio-desplacament">
+  <div class="contenidor-peu-pagina-espiga">
+    <div class="bloc-peu-pagina-espiga animacio-desplacament-esquerra animacio-escalonada">
+      <h3><i class="fas fa-address-book"></i> Contacte</h3>
+      <p><i class="fas fa-map-marker-alt"></i> Carrer d'Eugeni d'Ors, 62<br>08720 Vilafranca del Penedès<br>Barcelona</p>
+      <p><i class="fas fa-phone"></i> <a href="tel:938172748">938 17 27 48</a></p>
+      <p><i class="fas fa-envelope"></i> <a href="mailto:espiga@fundaciolespiga.cat">espiga@fundaciolespiga.cat</a></p>
+    </div>
+   <div class="bloc-peu-pagina-espiga animacio-desplacament animacio-escalonada">
+        <h3><i class="fas fa-concierge-bell"></i> Serveis</h3>
+        <ul>
+          <li><i class="fas fa-child"></i> <a href="CDIAPs.html">CDIAPs</a></li>
+          <li><i class="fas fa-school"></i> <a href="escolta-delta-espiga.html">Escola Delta-Espiga</a></li>
+          <li><i class="fas fa-sun"></i> <a href="centre-de-dia.html">Centre de Dia</a></li>
+          <li><i class="fas fa-home"></i> <a href="acolliment-residencial.html">Acollida Residencial</a></li>
+          <li><i class="fas fa-tools"></i> <a href="centre-ocupacional.html">Centre Ocupacional</a></li>
+          <li><i class="fas fa-heart"></i> <a href="respir.html">Respir</a></li>
+        </ul>
+      </div>
+    <div class="bloc-peu-pagina-espiga animacio-desplacament animacio-escalonada">
+      <h3><i class="fas fa-text-height"></i> Mida de la lletra</h3>
+      <div class="controls-text-espiga">
+        <button onclick="decreaseFontSize()" aria-label="Disminuir mida de lletra"><i class="fas fa-minus"></i> A</button>
+          <button onclick="normalFontSize()" style="font-weight: bold;" aria-label="Mida de lletra per defecte">A</button>
+          <button onclick="increaseFontSize()" aria-label="Augmentar mida de lletra"><i class="fas fa-plus"></i> A</button>
+      </div>
+    </div>
+  </div>
+   <div class="peu-pagina-inferior-espiga animacio-desplacament">
+      <p> La teva col·laboració és clau per continuar avançant | <a href="col·labora.html">Col·labora amb l'Espiga</a></p>
+      <p>© 2026 Fundació l'Espiga | <a href="avislegal.html">Avís legal</a> | <a href="política-de-privacitat.html"> Política de Privacitat</a></p>
+    </div>
+</footer>
+<script>
+    const baseSizes = {
+        body: 16,
+        h1: 32,
+        h2: 38,
+        h3: 20,
+        p: 16,
+        li: 16
+    };
+    let scaleFactor = 1;
+        
+    function increaseFontSize() {
+        scaleFactor = Math.min(scaleFactor + 0.1, 1.3); 
+        applyFontSizes();
+    }
+        
+    function decreaseFontSize() {
+        scaleFactor = Math.max(scaleFactor - 0.1, 0.8); 
+        applyFontSizes();
+    }
+        
+    function normalFontSize() {
+        scaleFactor = 1;
+        applyFontSizes();
+    }
+        
+    function applyFontSizes() {
+        document.body.style.fontSize = (baseSizes.body * scaleFactor) + 'px';
+        const h1Elements = document.querySelectorAll('h1');
+        h1Elements.forEach(el => el.style.fontSize = (baseSizes.h1 * scaleFactor) + 'px');
+        const h2Elements = document.querySelectorAll('h2');
+        h2Elements.forEach(el => el.style.fontSize = (baseSizes.h2 * scaleFactor) + 'px');        
+        const h3Elements = document.querySelectorAll('h3');
+        h3Elements.forEach(el => el.style.fontSize = (baseSizes.h3 * scaleFactor) + 'px');
+        const pElements = document.querySelectorAll('p');
+        pElements.forEach(el => el.style.fontSize = (baseSizes.p * scaleFactor) + 'px');
+        const liElements = document.querySelectorAll('li');
+        liElements.forEach(el => el.style.fontSize = (baseSizes.li * scaleFactor) + 'px');
+    }
+
+    function savePreference() {
+        localStorage.setItem('fontScaleFactor', scaleFactor);
+    }
+        
+    function loadPreference() {
+        const saved = localStorage.getItem('fontScaleFactor');
+        if (saved) {
+            scaleFactor = parseFloat(saved);
+            applyFontSizes();
+        }
+    }
+        
+    const originalIncrease = increaseFontSize;
+    const originalDecrease = decreaseFontSize;
+    const originalNormal = normalFontSize;
+        
+    increaseFontSize = function() {
+        originalIncrease();
+        savePreference();
+    };
+        
+    decreaseFontSize = function() {
+        originalDecrease();
+        savePreference();
+    };
+        
+    normalFontSize = function() {
+        originalNormal();
+        savePreference();
+    };
+        
+    window.addEventListener('load', loadPreference);
+    
+    const opcionsObservador = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    const observador = new IntersectionObserver((entrades) => {
+        entrades.forEach(entrada => {
+            if (entrada.isIntersecting) {
+                entrada.target.classList.add('animar');
+            }
+        });
+    }, opcionsObservador);
+    document.querySelectorAll('.animacio-desplacament, .animacio-desplacament-esquerra, .animacio-desplacament-dreta, .animacio-desplacament-escala').forEach(el => {
+        observador.observe(el);
+    });
+    
+    function actualitzarProgresDesplacament() {
+        const desplacamentSuperior = window.pageYOffset;
+        const alturaDocument = document.body.scrollHeight - window.innerHeight;
+        const percentatgeDesplacament = (desplacamentSuperior / alturaDocument) * 100;
+        document.querySelector('.progres-desplacament').style.width = percentatgeDesplacament + '%';
+    }
+    
+    function alternarDesplacarADalt() {
+        const botoDesplacarADalt = document.querySelector('.desplacar-a-dalt');
+        if (window.pageYOffset > 300) {
+            botoDesplacarADalt.classList.add('visible');
+        } else {
+            botoDesplacarADalt.classList.remove('visible');
+        }
+    }
+    
+    function desplacarADalt() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+    
+    window.addEventListener('scroll', () => {
+        actualitzarProgresDesplacament();
+        alternarDesplacarADalt();
+    });
+    
+    function toggleMenu() {
+        const menu = document.getElementById('menu');
+        menu.classList.toggle('show');
+    }
+    
+    document.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', () => {
+            const menu = document.getElementById('menu');
+            menu.classList.remove('show');
+        });
+    });
+</script>
+</body>
+</html>

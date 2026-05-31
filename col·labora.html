@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Col·labora - Fundació L'Espiga</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+        --color-principal: #de6225;
+        --color-secundari: #FDF6E3;
+        --color-destacat: #c55520;
+        --color-text: #000000;
+        --tipografia-principal: 'Segoe UI', sans-serif;
+        --textura-fons: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: var(--tipografia-principal);
+        background-color: var(--color-secundari);
+        color: var(--color-text);
+        background-image: var(--textura-fons);
+        background-blend-mode: multiply;
+        line-height: 1.6;
+        position: relative;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        font-size: clamp(14px, 4vw, 16px);
+    }
+
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(rgba(255, 255, 255, 0.1), transparent 80%);
+        z-index: -2;
+    }
+
+    .progres-desplacament {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-principal), #e87a3f, var(--color-destacat));
+        z-index: 1000;
+        transition: width 0.1s ease;
+        box-shadow: 0 2px 4px rgba(222, 98, 37, 0.3);
+    }
+
+    .animacio-desplacament {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animacio-desplacament.animar {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .animacio-desplacament-esquerra {
+        opacity: 0;
+        transform: translateX(-50px);
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animacio-desplacament-esquerra.animar {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .animacio-desplacament-dreta {
+        opacity: 0;
+        transform: translateX(50px);
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animacio-desplacament-dreta.animar {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .animacio-desplacament-escala {
+        opacity: 0;
+        transform: scale(0.8);
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animacio-desplacament-escala.animar {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .barra-contacte {
+        background: linear-gradient(135deg, #c55520 0%, #b54a1c 100%);
+        color: white;
+        padding: 8px 0;
+        font-size: clamp(0.8rem, 3vw, 0.9rem);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        z-index: 1001;
+    }
+
+    .contingut-barra-contacte {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+    }
+
+    .informacio-contacte {
+        display: flex;
+        gap: clamp(15px, 4vw, 30px);
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .element-contacte {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        padding: 8px 12px;
+        border-radius: 4px;
+        min-height: 44px;
+    }
+
+    .element-contacte:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-1px);
+    }
+
+    .element-contacte i {
+        color: #f5a573;
+        font-size: 1rem;
+        min-width: 20px;
+    }
+
+    .element-contacte a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+        display: flex;
+        align-items: center;
+    }
+
+    .element-contacte a:hover {
+        color: #f5a573;
+    }
+
+    .enllacos-socials {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .enllac-social {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 1.1rem;
+    }
+
+    .enllac-social:hover {
+        background: #f5a573;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    header {
+        background: #e87a3f;
+        color: white;
+        padding: 1rem 0;
+        position: relative;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+    }
+
+    main {
+        flex: 1;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .contingut-capcalera {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        flex-wrap: wrap;
+        position: relative;
+    }
+
+    .inici, .presentacio, .noticies, .serveis, .col·labora, .transparencia, .contacta {
+        transition: transform 0.3s ease;
+    }
+
+    .inici:hover, .presentacio:hover, .noticies:hover, .serveis:hover,
+    .col·labora:hover, .transparencia:hover, .contacta:hover {
+        transform: scale(1.1);
+    }
+
+    .logo {
+        transition: transform 0.3s ease;
+        z-index: 1001;
+    }
+
+    .logo:hover {
+        transform: scale(1.1);
+    }
+
+    .logo-espiga {
+        display: block;
+        height: clamp(50px, 10vw, 70px);
+        width: auto;
+        border-radius: 10px;
+    }
+
+    .logo-espiga img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 2rem;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        min-width: 44px;
+        min-height: 44px;
+        border-radius: 8px;
+        z-index: 1001;
+    }
+
+    .menu-toggle:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .menu-toggle:active {
+        transform: scale(0.95);
+    }
+
+    nav {
+        position: static;
+    }
+
+    nav ul {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    nav ul.show {
+        display: flex !important;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        font-size: clamp(1rem, 3vw, 1.1rem);
+        padding: 0.8rem 1.2rem;
+        transition: all 0.3s ease;
+        border-radius: 6px;
+        border: 1px solid transparent;
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+    }
+
+    nav a:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .desplacar-a-dalt {
+        position: fixed;
+        bottom: clamp(20px, 5vh, 30px);
+        right: clamp(20px, 4vw, 30px);
+        width: clamp(45px, 10vw, 50px);
+        height: clamp(45px, 10vw, 50px);
+        background: linear-gradient(135deg, var(--color-principal), var(--color-destacat));
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: clamp(1rem, 4vw, 1.2rem);
+        box-shadow: 0 4px 12px rgba(222, 98, 37, 0.3);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .desplacar-a-dalt.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .desplacar-a-dalt:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(222, 98, 37, 0.4);
+    }
+
+    .desplacar-a-dalt:active {
+        transform: scale(0.95);
+    }
+
+    /* Estilos específicos de col·labora.html */
+    .hero-collabora {
+        background: linear-gradient(135deg, var(--color-principal) 0%, #b54a1c 50%, var(--color-destacat) 100%);
+        color: white;
+        text-align: center;
+        padding: clamp(2rem, 8vh, 4rem) 1rem;
+        margin: -2rem -2rem 3rem -2rem;
+        border-radius: 0 0 30px 30px;
+        position: relative;
+        overflow: hidden;
+        min-height: clamp(200px, 40vh, 300px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hero-collabora::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.08)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .hero-collabora h1 {
+        font-size: clamp(1.8rem, 6vw, 3rem);
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-collabora p {
+        font-size: clamp(1rem, 3vw, 1.2rem);
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-collabora i {
+        font-size: clamp(2.5rem, 8vw, 4rem);
+        margin-bottom: 1rem;
+        color: #f5a573;
+        position: relative;
+        z-index: 1;
+    }
+
+    .seccio-collaboracio {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 4rem;
+    }
+
+    .text-collaboracio {
+        background: white;
+        padding: clamp(1.5rem, 4vw, 2.5rem);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(222, 98, 37, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .text-collaboracio::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-principal), #e87a3f, var(--color-destacat));
+    }
+
+    .text-collaboracio h2 {
+        color: var(--color-destacat);
+        margin-bottom: 1.5rem;
+        font-size: clamp(1.5rem, 5vw, 1.8rem);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .text-collaboracio h2 i {
+        color: var(--color-principal);
+        font-size: 1.2rem;
+    }
+
+    .text-collaboracio p {
+        color: #555;
+        line-height: 1.7;
+        font-size: clamp(0.95rem, 3vw, 1.05rem);
+        text-align: justify;
+    }
+
+    /* SECCIÓ DE DONACIÓ ONLINE */
+    .seccio-donacio-online {
+        background: white;
+        border-radius: 20px;
+        padding: clamp(1.5rem, 4vw, 3rem);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-bottom: 4rem;
+        border: 1px solid rgba(222, 98, 37, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .seccio-donacio-online::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-principal), #e87a3f, var(--color-destacat));
+    }
+
+    .seccio-donacio-online h2 {
+        color: var(--color-destacat);
+        margin-bottom: 2rem;
+        font-size: clamp(1.5rem, 5vw, 2rem);
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .donacio-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+
+    .donacio-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .input-group label {
+        font-weight: 600;
+        color: var(--color-destacat);
+        font-size: 0.9rem;
+    }
+
+    .input-group input, .input-group select {
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+    .input-group input:focus, .input-group select:focus {
+        outline: none;
+        border-color: var(--color-principal);
+        box-shadow: 0 0 0 3px rgba(222, 98, 37, 0.1);
+    }
+
+    .btn-donacio {
+        background: linear-gradient(135deg, var(--color-principal), var(--color-destacat));
+        color: white;
+        padding: 1rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        min-height: 50px;
+    }
+
+    .btn-donacio:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(222, 98, 37, 0.4);
+    }
+
+    .dades-bancaries {
+        background: var(--color-secundari);
+        padding: 2rem;
+        border-radius: 15px;
+        border: 1px solid rgba(222, 98, 37, 0.1);
+    }
+
+    .dades-bancaries h3 {
+        color: var(--color-destacat);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .dades-bancaries p {
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #555;
+    }
+
+    .dades-bancaries p i {
+        color: var(--color-principal);
+    }
+
+    .dades-bancaries .iban {
+        font-family: monospace;
+        font-size: 1.1rem;
+        background: white;
+        padding: 0.5rem;
+        border-radius: 4px;
+        border: 1px dashed #ccc;
+        margin-top: 5px;
+        word-break: break-all;
+    }
+
+    .btn-paypal {
+        display: block;
+        width: 100%;
+        padding: 1rem;
+        background: #0070ba;
+        color: white;
+        text-align: center;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        margin-top: 1rem;
+        transition: all 0.3s ease;
+        min-height: 50px;
+    }
+
+    .btn-paypal:hover {
+        background: #005ea6;
+        transform: translateY(-2px);
+    }
+
+    .botons-collaboracio {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-bottom: 4rem;
+    }
+
+    .boto-collaboracio {
+        background: white;
+        border: 2px solid rgba(222, 98, 37, 0.2);
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        text-decoration: none;
+        color: var(--color-destacat);
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .boto-collaboracio i {
+        font-size: clamp(2rem, 6vw, 3rem);
+        margin-bottom: 1rem;
+        color: var(--color-principal);
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 1;
+    }
+
+    .boto-collaboracio h3 {
+        font-size: clamp(1.2rem, 4vw, 1.4rem);
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        position: relative;
+        z-index: 1;
+    }
+
+    .boto-collaboracio p {
+        font-size: clamp(0.85rem, 3vw, 0.95rem);
+        opacity: 0.8;
+        position: relative;
+        z-index: 1;
+    }
+
+    .boto-collaboracio:hover {
+        background: linear-gradient(135deg, var(--color-principal), #e87a3f);
+        color: white;
+        border-color: var(--color-principal);
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(222, 98, 37, 0.3);
+    }
+
+    .boto-collaboracio:hover i {
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .agraiment {
+        background: linear-gradient(135deg, var(--color-principal) 0%, #b54a1c 50%, var(--color-destacat) 100%);
+        color: white;
+        text-align: center;
+        padding: clamp(2rem, 6vh, 4rem) 1rem;
+        border-radius: 30px;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 3rem;
+    }
+
+    /* Assegurar que la secció de donació quedi centrada */
+.seccio-donacio-online {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.seccio-donacio-online > h2 {
+    width: 100%;
+    text-align: center;
+}
+
+.contenidor-donacio-bizum {
+    max-width: 500px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.bizum-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.btn-donacio {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--color-principal), var(--color-destacat));
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(222, 98, 37, 0.3);
+    border: none;
+    cursor: pointer;
+    min-width: 180px;
+}
+
+.btn-donacio:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(222, 98, 37, 0.4);
+    background: linear-gradient(135deg, #e87a3f, var(--color-principal));
+}
+
+    .agraiment h2 {
+        font-size: clamp(1.5rem, 5vw, 2.5rem);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        position: relative;
+        z-index: 1;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        animation: flotacio 3s ease-in-out infinite;
+    }
+
+    .agraiment i {
+        font-size: clamp(2.5rem, 8vw, 4rem);
+        margin-bottom: 1rem;
+        color: #f5a573;
+        position: relative;
+        z-index: 1;
+        animation: flotacio 3s ease-in-out infinite 0.5s;
+    }
+
+    .animacio-escalonada {
+        transition-delay: 0.1s;
+    }
+
+    .animacio-escalonada:nth-child(2) { transition-delay: 0.2s; }
+    .animacio-escalonada:nth-child(3) { transition-delay: 0.3s; }
+    .animacio-escalonada:nth-child(4) { transition-delay: 0.4s; }
+    .animacio-escalonada:nth-child(5) { transition-delay: 0.5s; }
+    .animacio-escalonada:nth-child(6) { transition-delay: 0.6s; }
+
+    /* Footer */
+    #peu-pagina-espiga {
+        background: linear-gradient(135deg, #de6225 0%, #c55520 50%, #b54a1c 100%);
+        color: white;
+        font-family: 'Segoe UI', sans-serif;
+        padding: clamp(40px, 10vh, 60px) clamp(15px, 4vw, 20px) clamp(15px, 4vh, 20px);
+        position: relative;
+        overflow: hidden;
+        height: auto;
+        margin-top: auto;
+    }
+
+    #peu-pagina-espiga::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-principal), #e87a3f, var(--color-destacat));
+        box-shadow: 0 2px 8px rgba(222, 98, 37, 0.4);
+    }
+
+    .contenidor-peu-pagina-espiga {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: auto;
+        gap: clamp(25px, 6vw, 40px);
+        position: relative;
+        z-index: 1;
+    }
+
+    .bloc-peu-pagina-espiga {
+        flex: 1 1 250px;
+        min-width: 250px;
+        position: relative;
+    }
+
+    .bloc-peu-pagina-espiga h3 {
+        color: white;
+        margin-bottom: 20px;
+        font-size: clamp(1.2rem, 4vw, 1.4rem);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        position: relative;
+        padding-bottom: 12px;
+    }
+
+    .bloc-peu-pagina-espiga h3::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 2px;
+        background: linear-gradient(90deg, #f5a573, #e87a3f);
+        border-radius: 2px;
+    }
+
+    /* Estils per al contenidor de donació Bizum */
+.contenidor-donacio-bizum {
+    background: linear-gradient(135deg, #fff5eb, #ffe8d9);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    margin: 2rem 0;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--color-principal);
+}
+
+.bizum-info i {
+    font-size: 3rem;
+    color: var(--color-principal);
+    margin-bottom: 1rem;
+}
+
+.bizum-info h3 {
+    color: var(--color-principal);
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.codi-bizum {
+    background: var(--color-principal);
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    display: inline-block;
+    margin: 1rem 0;
+    letter-spacing: 5px;
+    font-family: monospace;
+}
+
+.bizum-info p {
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.btn-donacio {
+    background: linear-gradient(135deg, var(--color-principal), var(--color-destacat));
+    border: none;
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(222, 98, 37, 0.3);
+}
+
+.btn-donacio:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(222, 98, 37, 0.4);
+}
+
+.btn-donacio i {
+    margin-right: 8px;
+}
+
+/* Ajust responsiu */
+@media (max-width: 768px) {
+    .codi-bizum {
+        font-size: 2rem;
+        letter-spacing: 3px;
+    }
+    
+    .bizum-info h3 {
+        font-size: 1.4rem;
+    }
+    
+    .btn-donacio {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+}
+
+    .bloc-peu-pagina-espiga ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .bloc-peu-pagina-espiga ul li {
+        margin-bottom: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .bloc-peu-pagina-espiga a {
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 0;
+        border-radius: 4px;
+        position: relative;
+        min-height: 44px;
+    }
+
+    .bloc-peu-pagina-espiga a:hover {
+        color: #f5a573;
+        background: rgba(255, 255, 255, 0.05);
+        padding-left: 8px;
+    }
+
+    .controls-text-espiga {
+        display: flex;
+        gap: 8px;
+        margin-top: 15px;
+        flex-wrap: wrap;
+    }
+
+    .controls-text-espiga button {
+        background: linear-gradient(135deg, #b54a1c, #a0421a);
+        border: none;
+        color: white;
+        padding: clamp(8px, 3vw, 10px) clamp(10px, 4vw, 14px);
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: clamp(0.9rem, 3vw, 1rem);
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(181, 74, 28, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 45px;
+        justify-content: center;
+        min-height: 44px;
+    }
+
+    .controls-text-espiga button:hover {
+        background: linear-gradient(135deg, #c55520, #b54a1c);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(197, 85, 32, 0.4);
+    }
+
+    .peu-pagina-inferior-espiga {
+        text-align: center;
+        padding-top: 30px;
+        margin-top: 40px;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        font-size: clamp(0.85rem, 3vw, 0.95rem);
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .peu-pagina-inferior-espiga a {
+        color: #f5a573;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        display: inline-block;
+        padding: 8px 4px;
+    }
+
+    .peu-pagina-inferior-espiga a:hover {
+        color: #ffc299;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+    }
+
+    /* Media Queries - Barra de contacto */
+    @media (max-width: 768px) {
+        .barra-contacte {
+            padding: 6px 0;
+        }
+        .contingut-barra-contacte {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 10px;
+            gap: 5px;
+        }
+        .informacio-contacte {
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+            flex: 1;
+            justify-content: flex-start;
+        }
+        .element-contacte {
+            padding: 4px 6px;
+            min-height: 36px;
+        }
+        .element-contacte i {
+            font-size: 0.9rem;
+        }
+        .element-contacte a {
+            font-size: 0.8rem;
+        }
+        .enllacos-socials {
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .enllac-social {
+            width: 32px;
+            height: 32px;
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .contingut-barra-contacte { padding: 0 8px; }
+        .informacio-contacte { gap: 5px; }
+        .element-contacte { padding: 4px 5px; }
+        .element-contacte i { font-size: 0.85rem; min-width: 18px; }
+        .element-contacte a { font-size: 0.75rem; }
+        .enllac-social { width: 30px; height: 30px; font-size: 0.85rem; }
+    }
+
+    @media (max-width: 480px) {
+        .contingut-barra-contacte { padding: 0 5px; gap: 3px; }
+        .informacio-contacte { gap: 3px; justify-content: space-around; }
+        .element-contacte { padding: 3px 4px; gap: 3px; }
+        .element-contacte i { font-size: 0.8rem; min-width: 16px; }
+        .element-contacte a { font-size: 0.7rem; }
+        .enllacos-socials { gap: 4px; }
+        .enllac-social { width: 28px; height: 28px; font-size: 0.8rem; }
+    }
+
+    /* Media Queries - Contenido específico */
+    @media (max-width: 768px) {
+        .menu-toggle { display: block; }
+        nav { width: 100%; order: 3; }
+        nav ul {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            background: #dd5510;
+            border-radius: 12px;
+            margin-top: 1rem;
+            padding: 0.5rem 0;
+            position: relative;
+            z-index: 999;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        nav ul.show { display: flex !important; }
+        nav li { width: 100%; text-align: center; }
+        nav a {
+            justify-content: center;
+            padding: 1rem;
+            border-radius: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        nav li:last-child a { border-bottom: none; }
+        nav a:hover { transform: none; background: rgba(255, 255, 255, 0.2); }
+
+        .hero-collabora {
+            margin: -1rem -1rem 2rem -1rem;
+            min-height: 180px;
+        }
+
+        .donacio-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .seccio-collaboracio {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .botons-collaboracio {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .boto-collaboracio {
+            padding: 1.5rem;
+        }
+
+        .contenidor-peu-pagina-espiga { flex-direction: column; }
+        .bloc-peu-pagina-espiga {
+            width: 100%;
+            text-align: center;
+            min-width: 100%;
+        }
+        .bloc-peu-pagina-espiga h3 { justify-content: center; }
+        .bloc-peu-pagina-espiga h3::after { left: 50%; transform: translateX(-50%); }
+        .bloc-peu-pagina-espiga ul li { text-align: center; }
+        .bloc-peu-pagina-espiga ul li:hover { transform: none; }
+        .bloc-peu-pagina-espiga a { justify-content: center; }
+        .bloc-peu-pagina-espiga a:hover { padding-left: 0; }
+        .controls-text-espiga { justify-content: center; }
+        .peu-pagina-inferior-espiga { display: flex; flex-direction: column; gap: 10px; }
+    }
+
+    @media (max-width: 480px) {
+        .hero-collabora h1 { font-size: 1.5rem; }
+        .text-collaboracio { padding: 1rem; }
+        .text-collaboracio h2 { font-size: 1.3rem; flex-direction: column; gap: 5px; }
+        .boto-collaboracio { padding: 1rem; }
+        .boto-collaboracio i { font-size: 2rem; }
+        .boto-collaboracio h3 { font-size: 1.1rem; }
+        .seccio-donacio-online { padding: 1rem; }
+        .dades-bancaries { padding: 1rem; }
+        .dades-bancaries .iban { font-size: 0.9rem; }
+        .btn-donacio { font-size: 1rem; }
+        .agraiment h2 { font-size: 1.3rem; }
+    }
+</style>
+</head>
+<body>
+  <div class="progres-desplacament"></div>
+  <button class="desplacar-a-dalt" onclick="desplacarADalt()">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+  <div class="barra-contacte">
+    <div class="contingut-barra-contacte">
+      <div class="informacio-contacte">
+        <div class="element-contacte">
+          <i class="fas fa-phone"></i>
+          <a href="tel:938172748">93 817 27 48</a>
+        </div>
+        <div class="element-contacte">
+          <i class="fas fa-envelope"></i>
+          <a href="mailto:espiga@fundaciolespiga.cat">espiga@fundaciolespiga.cat</a>
+        </div>
+      </div>
+      <div class="enllacos-socials">
+        <a href="https://www.facebook.com/p/CENTRE-OCUPACIONAL-LESPIGA-100083339680773/" target="_blank" class="enllac-social" aria-label="Facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://www.instagram.com/fundacioespiga/" target="_blank" class="enllac-social" aria-label="Instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <header>
+    <div class="contingut-capcalera">
+      <a href="index.html">
+        <div class="logo">
+          <img src="logo espiga.png" alt="Logo Fundació L'Espiga" class="logo-espiga">
+        </div>
+      </a>
+      <button class="menu-toggle" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+    <nav class="apartats">
+        <ul id="menu">
+          <li class="inici"><a href="index.html">Inici</a></li>
+          <li class="presentacio"><a href="presentacio.html">Presentació</a></li>
+           <li class="serveis"><a href="serveis.html">Serveis</a></li>
+          <li class="noticies"><a href="noticies.html">Notícies</a></li>
+          <li class="col·labora"><a href="col·labora.html">Col·labora</a></li>
+          <li class="transparencia"><a href="transparencia.html">Transparència</a></li>
+          <li class="contacta"><a href="contacta.html">Contacta</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <div class="hero-collabora animacio-desplacament">
+      <i class="fas fa-hands-helping"></i>
+      <h1>Col·labora amb nosaltres</h1>
+      <p>La teva col·laboració és fonamental per continuar oferint el millor suport a les persones amb discapacitat i les seves famílies.</p>
+    </div>
+    <div class="seccio-collaboracio">
+      <div class="text-collaboracio animacio-desplacament-esquerra">
+        <h2><i class="fas fa-heart"></i> Per què col·laborar?</h2>
+        <p>La teva col·laboració és el millor suport perquè persones amb discapacitat puguin millorar la seva qualitat de vida.</p>
+        <br>
+        <p>La teva aportació pot ajudar a moltes persones amb situació de discapacitat. Si vol col·laborar amb la Fundació l'Espiga, ho pots fer clicant al següent botó. Ens posarem en contacte amb tu el més aviat possible.</p>
+      </div>
+      <div class="text-collaboracio animacio-desplacament-dreta">
+        <h2><i class="fas fa-gift"></i> Llegat i herència</h2>
+        <p>Pots deixar el teu llegat o herència a la Fundació l'Espiga i t'assegures que la teva solidaritat arribarà a les persones que ho necessiten quan tu ja no hi siguis....</p>
+        <br>
+        <p>La teva col·laboració és molt important per a que les persones amb paràlisi cerebral i altres patologies puguin disposar de més suport en les tasques que realitzen, especialment, en les activitats lúdiques, d'esbarjo, esportives i d'acompanyament. Ajuda'ns a millorar la nostra qualitat de vida aportant el teu suport i els teus coneixements.</p>
+      </div>
+    </div>
+   <div class="seccio-donacio-online animacio-desplacament">
+    <h2><i class="fas fa-credit-card"></i> Fes la teva donació</h2>
+    <div class="contenidor-donacio-bizum">
+        <div class="bizum-info">
+            <i class="fas fa-mobile-alt"></i>
+            <h3>Dona via Bizum</h3>
+            <div class="codi-bizum">13908</div>
+            <p>Obre l'app del teu banc, selecciona Bizum solidari i introdueix el codi <strong>13908</strong></p>
+            <a class="btn-donacio" href="https://bizum.help/quiero-donar/" target="_blank">
+                <i></i> Donar ara
+            </a>
+        </div>
+    </div>
+</div>
+        </div>
+      </div>
+    </div>
+    <div class="botons-collaboracio animacio-desplacament">
+    <div class="agraiment animacio-desplacament-escala">
+      <i class="fas fa-star"></i>
+      <h2>Moltes gràcies per la teva col·laboració!!!</h2>
+    </div>
+  </main>
+  <footer id="peu-pagina-espiga" class="animacio-desplacament">
+    <div class="contenidor-peu-pagina-espiga">
+      <div class="bloc-peu-pagina-espiga animacio-desplacament-esquerra animacio-escalonada">
+        <h3><i class="fas fa-address-book"></i> Contacte</h3>
+        <p><i class="fas fa-map-marker-alt"></i> Carrer d'Eugeni d'Ors, 62<br>08720 Vilafranca del Penedès<br>Barcelona</p>
+        <p><i class="fas fa-phone"></i> <a href="tel:938172748">938 17 27 48</a></p>
+        <p><i class="fas fa-envelope"></i> <a href="mailto:espiga@fundaciolespiga.cat">espiga@fundaciolespiga.cat</a></p>
+      </div>
+     <div class="bloc-peu-pagina-espiga animacio-desplacament animacio-escalonada">
+        <h3><i class="fas fa-concierge-bell"></i> Serveis</h3>
+        <ul>
+          <li><i class="fas fa-child"></i> <a href="CDIAPs.html">CDIAPs</a></li>
+          <li><i class="fas fa-school"></i> <a href="escolta-delta-espiga.html">Escola Delta-Espiga</a></li>
+          <li><i class="fas fa-sun"></i> <a href="centre-de-dia.html">Centre de Dia</a></li>
+          <li><i class="fas fa-home"></i> <a href="acolliment-residencial.html">Acollida Residencial</a></li>
+          <li><i class="fas fa-tools"></i> <a href="centre-ocupacional.html">Centre Ocupacional</a></li>
+          <li><i class="fas fa-heart"></i> <a href="respir.html">Respir</a></li>
+        </ul>
+      </div>
+      <div class="bloc-peu-pagina-espiga animacio-desplacament animacio-escalonada">
+        <h3><i class="fas fa-text-height"></i> Mida de la lletra</h3>
+        <div class="controls-text-espiga">
+          <button onclick="decreaseFontSize()" aria-label="Disminuir mida de lletra"><i class="fas fa-minus"></i> A</button>
+          <button onclick="normalFontSize()" style="font-weight: bold;" aria-label="Mida de lletra per defecte">A</button>
+          <button onclick="increaseFontSize()" aria-label="Augmentar mida de lletra"><i class="fas fa-plus"></i> A</button>
+        </div>
+      </div>
+    </div>
+   <div class="peu-pagina-inferior-espiga animacio-desplacament">
+      <p> La teva col·laboració és clau per continuar avançant | <a href="col·labora.html">Col·labora amb l'Espiga</a></p>
+      <p>© 2026 Fundació l'Espiga | <a href="avislegal.html">Avís legal</a> | <a href="política-de-privacitat.html"> Política de Privacitat</a></p>
+    </div>
+  </footer>
+  
+  <script>
+
+      const baseSizes = {
+  body: 16,
+  h1: 32,
+  h2: 38,
+  h3: 20,
+  p: 16,
+  li: 16
+  };
+        
+  let scaleFactor = 1;
+        
+  function increaseFontSize() {
+    scaleFactor = Math.min(scaleFactor + 0.1, 1.3); 
+    applyFontSizes();
+  }
+        
+  function decreaseFontSize() {
+    scaleFactor = Math.max(scaleFactor - 0.1, 0.8); 
+    applyFontSizes();
+  }
+        
+  function normalFontSize() {
+    scaleFactor = 1;
+    applyFontSizes();
+  }
+        
+  function applyFontSizes() {
+    document.body.style.fontSize = (baseSizes.body * scaleFactor) + 'px';
+
+    const h1Elements = document.querySelectorAll('h1');
+    h1Elements.forEach(el => {
+      el.style.fontSize = (baseSizes.h1 * scaleFactor) + 'px';
+    });
+            
+    const h2Elements = document.querySelectorAll('h2');
+    h2Elements.forEach(el => {
+      el.style.fontSize = (baseSizes.h2 * scaleFactor) + 'px';
+    });        
+            
+    const h3Elements = document.querySelectorAll('h3');
+    h3Elements.forEach(el => {
+      el.style.fontSize = (baseSizes.h3 * scaleFactor) + 'px';
+    });
+            
+    const pElements = document.querySelectorAll('p');
+    pElements.forEach(el => {
+      el.style.fontSize = (baseSizes.p * scaleFactor) + 'px';
+    });
+            
+   const liElements = document.querySelectorAll('li');
+   liElements.forEach(el => {
+    el.style.fontSize = (baseSizes.li * scaleFactor) + 'px';
+   });
+   }
+
+  function savePreference() {
+    localStorage.setItem('fontScaleFactor', scaleFactor);
+  }
+        
+  function loadPreference() {
+    const saved = localStorage.getItem('fontScaleFactor');
+    if (saved) {
+      scaleFactor = parseFloat(saved);
+      applyFontSizes();
+    }
+    }
+        
+    const originalIncrease = increaseFontSize;
+    const originalDecrease = decreaseFontSize;
+    const originalNormal = normalFontSize;
+        
+    increaseFontSize = function() {
+    originalIncrease();
+    savePreference();
+    };
+        
+    decreaseFontSize = function() {
+    originalDecrease();
+    savePreference();
+    };
+        
+    normalFontSize = function() {
+    originalNormal();
+    savePreference();
+    };
+        
+    window.addEventListener('load', loadPreference);
+    
+    const opcionsObservador = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+    const observador = new IntersectionObserver((entrades) => {
+      entrades.forEach(entrada => {
+        if (entrada.isIntersecting) {
+          entrada.target.classList.add('animar');
+        }
+      });
+    }, opcionsObservador);
+    document.querySelectorAll('.animacio-desplacament, .animacio-desplacament-esquerra, .animacio-desplacament-dreta, .animacio-desplacament-escala').forEach(el => {
+      observador.observe(el);
+    });
+    function actualitzarProgresDesplacament() {
+      const desplacamentSuperior = window.pageYOffset;
+      const alturaDocument = document.body.scrollHeight - window.innerHeight;
+      const percentatgeDesplacament = (desplacamentSuperior / alturaDocument) * 100;
+      document.querySelector('.progres-desplacament').style.width = percentatgeDesplacament + '%';
+    }
+    function actualitzarParallax() {
+      const desplacat = window.pageYOffset;
+      const elementsParallax = document.querySelectorAll('.element-parallax');
+      elementsParallax.forEach(element => {
+        const velocitat = 0.5;
+        const posicioY = -(desplacat * velocitat);
+        element.style.transform = `translateY(${posicioY}px)`;
+      });
+    }
+    function alternarDesplacarADalt() {
+      const botoDesplacarADalt = document.querySelector('.desplacar-a-dalt');
+      if (window.pageYOffset > 300) {
+        botoDesplacarADalt.classList.add('visible');
+      } else {
+        botoDesplacarADalt.classList.remove('visible');
+      }
+    }
+    function desplacarADalt() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+    window.addEventListener('scroll', () => {
+      actualitzarProgresDesplacament();
+      actualitzarParallax();
+      alternarDesplacarADalt();
+    });
+    document.querySelectorAll('a[href^="#"]').forEach(ancora => {
+      ancora.addEventListener('click', function (e) {
+        e.preventDefault();
+        const objectiu = document.querySelector(this.getAttribute('href'));
+        if (objectiu) {
+          objectiu.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.animacio-desplacament, .animacio-desplacament-esquerra, .animacio-desplacament-dreta, .animacio-desplacament-escala').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          el.classList.add('animar');
+        }
+      });
+    });
+    function toggleMenu() {
+      const menu = document.getElementById('menu');
+      menu.classList.toggle('show');
+    }
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', () => {
+        const menu = document.getElementById('menu');
+        menu.classList.remove('show');
+      });
+    });
+        // Lógica para el formulario de donación
+    document.getElementById('formDonacio').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Aquí iría la integración real con la pasarela de pago
+      // Por ahora, mostramos un mensaje de éxito
+      const nom = document.getElementById('nom').value;
+      const importe = document.getElementById('import').value;
+      
+      alert(`Moltes gràcies ${nom}! \nLa teva donació de ${importe}€ ha estat registrada correctament.\n\n(Això és una demostració, en un entorn real es redirigiria a la passarel·la de pagament)`);
+      
+      // Limpiar formulario
+      this.reset();
+    });
+
+    function processarDonacio() {
+    // Agafar l'import seleccionat
+    let importSelect = document.getElementById('import');
+    let importValue = importSelect.value;
+    let importText = importSelect.options[importSelect.selectedIndex].text;
+    
+    // Si l'usuari ha seleccionat "Altre import", demanar-lo
+    if (importValue === 'altre') {
+        let altreImport = prompt('Introdueix l\'import de la teva donació (€):', '25');
+        if (altreImport && !isNaN(altreImport) && parseInt(altreImport) > 0) {
+            importValue = parseInt(altreImport);
+            importText = importValue + '€';
+        } else {
+            alert('Si us plau, introdueix un import vàlid.');
+            return;
+        }
+    }
+    
+    // Agafar dades de l'usuari
+    let nom = document.getElementById('nom').value;
+    let email = document.getElementById('email').value;
+    
+    if (!nom || !email) {
+        alert('Si us plau, omple el teu nom i correu electrònic.');
+        return;
+    }
+    
+    // Guardar dades de la donació (opcional, per a estadístiques)
+    console.log('Donació de ' + importText + ' realitzada per ' + nom + ' (' + email + ')');
+    
+    // Redirigir a Bizum amb el codi 13908
+    // Mostrar instruccions per fer la donació via Bizum
+    alert('✅ Gràcies ' + nom + '!\n\n' +
+          'Per completar la teva donació de ' + importText + ':\n\n' +
+          '1️⃣ Obre l\'app del teu banc\n' +
+          '2️⃣ Selecciona l\'opció Bizum\n' +
+          '3️⃣ Introdueix el codi solidari: **13908**\n' +
+          '4️⃣ Introdueix l\'import: ' + importText + '\n' +
+          '5️⃣ Confirma la donació\n\n' +
+          'Gràcies per ajudar-nos a continuar la nostra tasca! 💙');
+    
+    // Opcional: obrir l'app de Bizum directament (si està configurat)
+    // window.location.href = 'bizum://send?amount=' + importValue + '&code=13908';
+    
+    // Resetear formulari
+    document.getElementById('formDonacio').reset();
+}
+  </script>
+</body>
+</html>

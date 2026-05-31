@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Centre Ocupacional - Fundació L'Espiga</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+        --color-principal: #de6225;
+        --color-secundari: #FDF6E3;
+        --color-destacat: #c55520;
+        --color-text: #000000;
+        --tipografia-principal: 'Segoe UI', sans-serif;
+        --textura-fons: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: var(--tipografia-principal);
+        background-color: var(--color-secundari);
+        color: var(--color-text);
+        background-image: var(--textura-fons);
+        background-blend-mode: multiply;
+        line-height: 1.6;
+        position: relative;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        font-size: clamp(14px, 4vw, 16px);
+    }
+
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(rgba(255, 255, 255, 0.1), transparent 80%);
+        z-index: -2;
+    }
+
+    .progres-desplacament {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-principal), #e87a3f, var(--color-destacat));
+        z-index: 1000;
+        transition: width 0.1s ease;
+        box-shadow: 0 2px 4px rgba(222, 98, 37, 0.3);
+    }
+
+    .animacio-desplacament {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animacio-desplacament.animar {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .animacio-desplacament-esquerra {
+        opacity: 0;
+        transform: translateX(-50px);
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animacio-desplacament-esquerra.animar {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .animacio-desplacament-dreta {
+        opacity: 0;
+        transform: translateX(50px);
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animacio-desplacament-dreta.animar {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .animacio-desplacament-escala {
+        opacity: 0;
+        transform: scale(0.8);
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animacio-desplacament-escala.animar {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    @keyframes flotacio {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-6px); }
+    }
+
+    .barra-contacte {
+        background: linear-gradient(135deg, #c55520 0%, #b54a1c 100%);
+        color: white;
+        padding: 8px 0;
+        font-size: clamp(0.8rem, 3vw, 0.9rem);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        z-index: 1001;
+    }
+
+    .contingut-barra-contacte {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+    }
+
+    .informacio-contacte {
+        display: flex;
+        gap: clamp(15px, 4vw, 30px);
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .element-contacte {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        padding: 8px 12px;
+        border-radius: 4px;
+        min-height: 44px;
+    }
+
+    .element-contacte:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-1px);
+    }
+
+    .element-contacte i {
+        color: #f5a573;
+        font-size: 1rem;
+        min-width: 20px;
+    }
+
+    .element-contacte a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+        display: flex;
+        align-items: center;
+    }
+
+    .element-contacte a:hover {
+        color: #f5a573;
+    }
+
+    .enllacos-socials {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .enllac-social {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 1.1rem;
+    }
+
+    .enllac-social:hover {
+        background: #f5a573;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    header {
+        background: #e87a3f;
+        color: white;
+        padding: 1rem 0;
+        position: relative;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+    }
+
+    main {
+        flex: 1;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .contingut-capcalera {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        flex-wrap: wrap;
+        position: relative;
+    }
+
+    .inici, .presentacio, .noticies, .serveis, .col·labora, .transparencia, .contacta {
+        transition: transform 0.3s ease;
+    }
+
+    .inici:hover, .presentacio:hover, .noticies:hover, .serveis:hover,
+    .col·labora:hover, .transparencia:hover, .contacta:hover {
+        transform: scale(1.1);
+    }
+
+    .logo {
+        transition: transform 0.3s ease;
+        z-index: 1001;
+    }
+
+    .logo:hover {
+        transform: scale(1.1);
+    }
+
+    .logo-espiga {
+        display: block;
+        height: clamp(60px, 10vw, 90px);
+        width: auto;
+        border-radius: 10px;
+        background-color: #ffffff;
+    }
+
+    .logo-espiga img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 2rem;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        min-width: 44px;
+        min-height: 44px;
+        border-radius: 8px;
+        z-index: 1001;
+    }
+
+    .menu-toggle:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .menu-toggle:active {
+        transform: scale(0.95);
+    }
+
+    nav {
+        position: static;
+    }
+
+    nav ul {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    nav ul.show {
+        display: flex !important;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        font-size: clamp(1rem, 3vw, 1.1rem);
+        padding: 0.8rem 1.2rem;
+        transition: all 0.3s ease;
+        border-radius: 6px;
+        border: 1px solid transparent;
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+    }
+
+    nav a:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .desplacar-a-dalt {
+        position: fixed;
+        bottom: clamp(20px, 5vh, 30px);
+        right: clamp(20px, 4vw, 30px);
+        width: clamp(45px, 10vw, 50px);
+        height: clamp(45px, 10vw, 50px);
+        background: linear-gradient(135deg, var(--color-principal), var(--color-destacat));
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: clamp(1rem, 4vw, 1.2rem);
+        box-shadow: 0 4px 12px rgba(222, 98, 37, 0.3);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .desplacar-a-dalt.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .desplacar-a-dalt:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(222, 98, 37, 0.4);
+    }
+
+    .desplacar-a-dalt:active {
+        transform: scale(0.95);
+    }
+
+    /* Estilos específicos de centre-ocupacional.html */
+    .seccio-contingut {
+        margin-bottom: 3rem;
+        padding: clamp(1.5rem, 4vw, 2rem);
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(222, 98, 37, 0.1);
+    }
+
+    .titol-principal {
+        color: var(--color-principal);
+        font-size: clamp(2rem, 6vw, 2.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+        padding-bottom: 1rem;
+    }
+
+    .titol-principal::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-principal), #e87a3f);
+        border-radius: 2px;
+    }
+
+    .titol-seccio {
+        color: var(--color-destacat);
+        font-size: clamp(1.5rem, 5vw, 1.8rem);
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .titol-seccio i {
+        color: var(--color-principal);
+        font-size: 1.5rem;
+    }
+
+    .text-contingut {
+        font-size: clamp(0.95rem, 3vw, 1.1rem);
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+        text-align: justify;
+    }
+
+    .badina-concert {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, var(--color-principal), #e87a3f);
+        color: white;
+        padding: 0.2rem 1rem;
+        border-radius: 30px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-left: 0.5rem;
+        vertical-align: middle;
+    }
+
+    .llista-equip {
+        list-style: none;
+        padding-left: 1rem;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 0.6rem;
+    }
+    .llista-equip li {
+        margin-bottom: 0.6rem;
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        font-size: clamp(0.95rem, 3.5vw, 1.05rem);
+    }
+    .llista-equip li i {
+        color: var(--color-principal);
+        font-size: 0.9rem;
+        min-width: 22px;
+    }
+
+    .llista-serveis {
+        list-style: none;
+        padding-left: 1rem;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 0.6rem;
+    }
+    .llista-serveis li {
+        margin-bottom: 0.6rem;
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        font-size: clamp(0.95rem, 3.5vw, 1.05rem);
+    }
+    .llista-serveis li i {
+        color: var(--color-principal);
+        font-size: 0.9rem;
+        min-width: 22px;
+    }
+
+    .destacat {
+        background: linear-gradient(135deg, var(--color-principal), #e87a3f);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin: 2rem 0;
+        text-align: center;
+        font-weight: 600;
+        font-size: clamp(0.95rem, 3vw, 1.1rem);
+    }
+
+    /* Galeria de fotos */
+    .galeria-fotos {
+        display: grid;
+        gap: 2rem;
+        margin: 2rem 0;
+        padding: 1rem;
+    }
+
+    .galeria-fotos.sis-fotos {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .galeria-fotos.tres-fotos {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        max-width: 900px;
+        margin: 2rem auto;
+    }
+
+    .marc-foto {
+        position: relative;
+        width: 100%;
+        height: clamp(120px, 25vw, 200px);
+        border-radius: 20px;
+        overflow: hidden;
+        background: linear-gradient(145deg, #ffffff, #f0f0f0);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        cursor: pointer;
+        border: 3px solid transparent;
+        background-clip: padding-box;
+    }
+
+    .marc-foto::before {
+        content: '';
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+        background: linear-gradient(45deg, var(--color-principal), #e87a3f, var(--color-destacat), var(--color-principal));
+        border-radius: 23px;
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+
+    .marc-foto:hover::before {
+        opacity: 1;
+    }
+
+    .marc-foto:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 25px 50px rgba(222, 98, 37, 0.3);
+    }
+
+    .marc-foto img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.4s ease;
+        border-radius: 17px;
+    }
+
+    .marc-foto:hover img {
+        transform: scale(1.1);
+    }
+
+    .marc-foto:nth-child(odd) {
+        animation: flotacio 6s ease-in-out infinite;
+    }
+
+    .marc-foto:nth-child(even) {
+        animation: flotacio 6s ease-in-out infinite reverse;
+        animation-delay: -3s;
+    }
+
+    .marc-foto:hover {
+        animation-play-state: paused;
+    }
+
+    /* Carruseles */
+    .servei-complementari {
+        background: rgba(222, 98, 37, 0.05);
+        border-radius: 15px;
+        padding: clamp(1.5rem, 4vw, 2rem);
+        margin-bottom: 2rem;
+        border-left: 5px solid var(--color-principal);
+    }
+
+    .servei-complementari h3 {
+        color: var(--color-destacat);
+        font-size: clamp(1.3rem, 4vw, 1.5rem);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .servei-complementari h3 i {
+        color: var(--color-principal);
+    }
+
+    .carrusel-container {
+        position: relative;
+        margin: 2rem 0;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 15px;
+        padding: 1rem;
+        border: 1px solid rgba(222, 98, 37, 0.2);
+    }
+
+    .carrusel {
+        display: flex;
+        overflow: hidden;
+        border-radius: 10px;
+        position: relative;
+    }
+
+    .carrusel-slide {
+        min-width: 100%;
+        transition: transform 0.5s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .carrusel-imatge {
+        width: 100%;
+        height: clamp(200px, 30vh, 300px);
+        background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+        border: 2px solid var(--color-principal);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .carrusel-imatge img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .carrusel-imatge:hover img {
+        transform: scale(1.05);
+    }
+
+    .carrusel-controls {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 1rem;
+    }
+
+    .carrusel-btn {
+        background: var(--color-principal);
+        color: white;
+        border: none;
+        width: clamp(35px, 8vw, 40px);
+        height: clamp(35px, 8vw, 40px);
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: clamp(1rem, 4vw, 1.2rem);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .carrusel-btn:hover {
+        background: #e87a3f;
+        transform: scale(1.1);
+    }
+
+    .carrusel-indicators {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 10px;
+    }
+
+    .indicator {
+        width: clamp(8px, 2vw, 10px);
+        height: clamp(8px, 2vw, 10px);
+        border-radius: 50%;
+        background: rgba(222, 98, 37, 0.3);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .indicator.active {
+        background: var(--color-principal);
+        transform: scale(1.2);
+    }
+
+    .animacio-escalonada {
+        transition-delay: 0.1s;
+    }
+
+    .animacio-escalonada:nth-child(2) { transition-delay: 0.2s; }
+    .animacio-escalonada:nth-child(3) { transition-delay: 0.3s; }
+    .animacio-escalonada:nth-child(4) { transition-delay: 0.4s; }
+    .animacio-escalonada:nth-child(5) { transition-delay: 0.5s; }
+    .animacio-escalonada:nth-child(6) { transition-delay: 0.6s; }
+
+    /* Footer */
+    #peu-pagina-espiga {
+        background: linear-gradient(135deg, #de6225 0%, #c55520 50%, #b54a1c 100%);
+        color: white;
+        font-family: 'Segoe UI', sans-serif;
+        padding: clamp(40px, 10vh, 60px) clamp(15px, 4vw, 20px) clamp(15px, 4vh, 20px);
+        position: relative;
+        overflow: hidden;
+        height: auto;
+        margin-top: auto;
+    }
+
+    #peu-pagina-espiga::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-principal), #e87a3f, var(--color-destacat));
+        box-shadow: 0 2px 8px rgba(222, 98, 37, 0.4);
+    }
+
+    .contenidor-peu-pagina-espiga {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: auto;
+        gap: clamp(25px, 6vw, 40px);
+        position: relative;
+        z-index: 1;
+    }
+
+    .bloc-peu-pagina-espiga {
+        flex: 1 1 250px;
+        min-width: 250px;
+        position: relative;
+    }
+
+    .bloc-peu-pagina-espiga h3 {
+        color: white;
+        margin-bottom: 20px;
+        font-size: clamp(1.2rem, 4vw, 1.4rem);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        position: relative;
+        padding-bottom: 12px;
+    }
+
+    .bloc-peu-pagina-espiga h3::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 2px;
+        background: linear-gradient(90deg, #f5a573, #e87a3f);
+        border-radius: 2px;
+    }
+
+    .bloc-peu-pagina-espiga ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .bloc-peu-pagina-espiga ul li {
+        margin-bottom: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .bloc-peu-pagina-espiga a {
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 0;
+        border-radius: 4px;
+        position: relative;
+        min-height: 44px;
+    }
+
+    .bloc-peu-pagina-espiga a:hover {
+        color: #f5a573;
+        background: rgba(255, 255, 255, 0.05);
+        padding-left: 8px;
+    }
+
+    .controls-text-espiga {
+        display: flex;
+        gap: 8px;
+        margin-top: 15px;
+        flex-wrap: wrap;
+    }
+
+    .controls-text-espiga button {
+        background: linear-gradient(135deg, #b54a1c, #a0421a);
+        border: none;
+        color: white;
+        padding: clamp(8px, 3vw, 10px) clamp(10px, 4vw, 14px);
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: clamp(0.9rem, 3vw, 1rem);
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(181, 74, 28, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 45px;
+        justify-content: center;
+        min-height: 44px;
+    }
+
+    .controls-text-espiga button:hover {
+        background: linear-gradient(135deg, #c55520, #b54a1c);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(197, 85, 32, 0.4);
+    }
+
+    .peu-pagina-inferior-espiga {
+        text-align: center;
+        padding-top: 30px;
+        margin-top: 40px;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        font-size: clamp(0.85rem, 3vw, 0.95rem);
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .peu-pagina-inferior-espiga a {
+        color: #f5a573;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        display: inline-block;
+        padding: 8px 4px;
+    }
+
+    .peu-pagina-inferior-espiga a:hover {
+        color: #ffc299;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+    }
+
+    /* Media Queries */
+    @media (max-width: 768px) {
+        .barra-contacte { padding: 6px 0; }
+        .contingut-barra-contacte {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 10px;
+            gap: 5px;
+        }
+        .informacio-contacte {
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+            flex: 1;
+            justify-content: flex-start;
+        }
+        .element-contacte { padding: 4px 6px; min-height: 36px; }
+        .element-contacte i { font-size: 0.9rem; }
+        .element-contacte a { font-size: 0.8rem; }
+        .enllacos-socials { gap: 6px; flex-shrink: 0; }
+        .enllac-social { width: 32px; height: 32px; font-size: 0.9rem; }
+
+        .menu-toggle { display: block; }
+        nav { width: 100%; order: 3; }
+        nav ul {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            background: #dd5510;
+            border-radius: 12px;
+            margin-top: 1rem;
+            padding: 0.5rem 0;
+            position: relative;
+            z-index: 999;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        nav ul.show { display: flex !important; }
+        nav li { width: 100%; text-align: center; }
+        nav a {
+            justify-content: center;
+            padding: 1rem;
+            border-radius: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        nav li:last-child a { border-bottom: none; }
+        nav a:hover { transform: none; background: rgba(255, 255, 255, 0.2); }
+
+        .galeria-fotos.sis-fotos { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+        .galeria-fotos.tres-fotos { grid-template-columns: 1fr; }
+
+        .contenidor-peu-pagina-espiga { flex-direction: column; }
+        .bloc-peu-pagina-espiga {
+            width: 100%;
+            text-align: center;
+            min-width: 100%;
+        }
+        .bloc-peu-pagina-espiga h3 { justify-content: center; }
+        .bloc-peu-pagina-espiga h3::after { left: 50%; transform: translateX(-50%); }
+        .bloc-peu-pagina-espiga ul li { text-align: center; }
+        .bloc-peu-pagina-espiga ul li:hover { transform: none; }
+        .bloc-peu-pagina-espiga a { justify-content: center; }
+        .bloc-peu-pagina-espiga a:hover { padding-left: 0; }
+        .controls-text-espiga { justify-content: center; }
+        .peu-pagina-inferior-espiga { display: flex; flex-direction: column; gap: 10px; }
+    }
+
+    @media (max-width: 480px) {
+        .contingut-barra-contacte { padding: 0 5px; gap: 3px; }
+        .informacio-contacte { gap: 3px; justify-content: space-around; }
+        .element-contacte { padding: 3px 4px; gap: 3px; }
+        .element-contacte i { font-size: 0.8rem; min-width: 16px; }
+        .element-contacte a { font-size: 0.7rem; }
+        .enllacos-socials { gap: 4px; }
+        .enllac-social { width: 28px; height: 28px; font-size: 0.8rem; }
+
+        .titol-principal { font-size: 1.8rem; }
+        .galeria-fotos.sis-fotos { grid-template-columns: 1fr; }
+        .marc-foto { height: 150px; }
+        .carrusel-imatge { height: 180px; }
+        .llista-equip, .llista-serveis { grid-template-columns: 1fr; }
+    }
+</style>
+</head>
+<body>
+  <div class="progres-desplacament"></div>
+  <button class="desplacar-a-dalt" onclick="desplacarADalt()">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <div class="barra-contacte">
+    <div class="contingut-barra-contacte">
+      <div class="informacio-contacte">
+        <div class="element-contacte">
+          <i class="fas fa-phone"></i>
+          <a href="tel:938172748">93 817 27 48</a>
+        </div>
+        <div class="element-contacte">
+          <i class="fas fa-envelope"></i>
+          <a href="mailto:espiga@fundaciolespiga.cat">espiga@fundaciolespiga.cat</a>
+        </div>
+      </div>
+      <div class="enllacos-socials">
+        <a href="https://www.facebook.com/p/CENTRE-OCUPACIONAL-LESPIGA-100083339680773/" target="_blank" class="enllac-social" aria-label="Facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://www.instagram.com/fundacioespiga/" target="_blank" class="enllac-social" aria-label="Instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <div class="contingut-capcalera">
+      <a href="index.html">
+      <div class="logo">
+        <img src="Centre-ocupacional-logo-color-transparent.png" alt="Logo Fundació L'Espiga" class="logo-espiga">
+      </div>
+      </a>
+      <button class="menu-toggle" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+    <nav class="apartats">
+        <ul id="menu">
+          <li class="inici"><a href="index.html">Inici</a></li>
+          <li class="presentacio"><a href="presentacio.html">Presentació</a></li>
+           <li class="serveis"><a href="serveis.html">Serveis</a></li>
+          <li class="noticies"><a href="noticies.html">Notícies</a></li>
+          <li class="col·labora"><a href="col·labora.html">Col·labora</a></li>
+          <li class="transparencia"><a href="transparencia.html">Transparència</a></li>
+          <li class="contacta"><a href="contacta.html">Contacta</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="animacio-desplacament">
+      <h1 class="titol-principal">Centre Ocupacional</h1>
+    </div>
+
+    <!-- QUI SOM -->
+    <section class="seccio-contingut animacio-desplacament">
+      <h2 class="titol-seccio">
+        <i class="fas fa-users"></i>
+        Qui som
+      </h2>
+      <p class="text-contingut">
+        El Centre Ocupacional és un servei d'atenció diürna adreçat a persones adultes amb diversitat funcional que ofereix un espai de suport, participació i desenvolupament personal. Mitjançant una atenció rehabilitadora, habilitadora i d'ajustament personal i social, adaptada a les necessitats de cada persona, les persones usuàries poden participar en activitats ocupacionals i terapèutiques significatives que afavoreixen el desenvolupament de les seves habilitats personals, socials i funcionals, així com la seva autonomia i inclusió social.
+      </p>
+      <p class="text-contingut">
+        El servei està concertat amb el Departament de Drets Socials de la Generalitat de Catalunya amb el número de registre <strong>S01106</strong> <span class="badina-concert"><i class="fas fa-check-circle"></i> Concertat</span>.
+      </p>
+    </section>
+
+    <!-- EL NOSTRE CENTRE -->
+    <section class="seccio-contingut animacio-desplacament">
+      <h2 class="titol-seccio">
+        <i class="fas fa-building"></i>
+        El nostre centre
+      </h2>
+      <p class="text-contingut">
+        El Centre Ocupacional és un espai pensat per afavorir el desenvolupament personal, social i funcional de les persones ateses, oferint activitats adaptades a les necessitats i possibilitats de cadascú.
+      </p>
+      <p class="text-contingut">
+        Disposem d'espais i materials adaptats per al desenvolupament d'activitats ocupacionals, manipulatives, creatives i terapèutiques, així com d'entorns que promouen la convivència, la comunicació i la participació comunitària.
+      </p>
+      <p class="text-contingut">
+        El centre compta amb <strong>37 places concertades</strong> i ofereix una atenció propera i individualitzada, basada en el respecte, l'acompanyament i la promoció de les capacitats de cada persona.
+      </p>
+      <!-- FOTO després del text "El nostre centre" -->
+      <div class="galeria-fotos sis-fotos animacio-desplacament-escala">
+        <div class="marc-foto animacio-escalonada">
+          <a href="foto1-centreocupacional.jpg" target="_blank">
+            <img src="foto1-centreocupacional.jpg" alt="Imatge del Centre Ocupacional">
+          </a>
+        </div>
+        <div class="marc-foto animacio-escalonada">
+          <a href="foto2-centreocupacional.jpg" target="_blank">
+            <img src="foto2-centreocupacional.jpg" alt="Imatge del Centre Ocupacional">
+          </a>
+        </div>
+        <div class="marc-foto animacio-escalonada">
+          <a href="foto3-centreocupacional.jpg" target="_blank">
+            <img src="foto3-centreocupacional.jpg" alt="Imatge del Centre Ocupacional">
+          </a>
+        </div>
+        <div class="marc-foto animacio-escalonada">
+          <a href="foto4-centreocupacional.jpg" target="_blank">
+            <img src="foto4-centreocupacional.jpg" alt="Imatge del Centre Ocupacional">
+          </a>
+        </div>
+        <div class="marc-foto animacio-escalonada">
+          <a href="foto5-centreocupacional.jpg" target="_blank">
+            <img src="foto5-centreocupacional.jpg" alt="Imatge del Centre Ocupacional">
+          </a>
+        </div>
+        <div class="marc-foto animacio-escalonada">
+          <a href="foto6-centreocupacional.jpg" target="_blank">
+            <img src="foto6-centreocupacional.jpg" alt="Imatge del Centre Ocupacional">
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- A QUI VA ADREÇAT -->
+    <section class="seccio-contingut animacio-desplacament">
+      <h2 class="titol-seccio">
+        <i class="fas fa-user-check"></i>
+        A qui va adreçat
+      </h2>
+      <p class="text-contingut">
+        El servei s'adreça a persones adultes amb diversitat funcional en edat laboral <strong>(18-65 anys)</strong> que, a causa de les seves limitacions físiques, intel·lectuals i/o sensorials, no poden incorporar-se, temporalment o definitivament, al món laboral ordinari o protegit.
+      </p>
+    </section>
+
+    <!-- L'EQUIP PROFESSIONAL -->
+    <section class="seccio-contingut animacio-desplacament">
+      <h2 class="titol-seccio">
+        <i class="fas fa-user-md"></i>
+        L'equip professional
+      </h2>
+      <p class="text-contingut">
+        Disposem d'un equip multidisciplinari format per professionals d'atenció directa i especialistes de diferents àmbits, formats en l'atenció i suport a persones amb discapacitat, que treballen de manera integrada i coordinada per oferir una atenció de qualitat centrada en la persona.
+      </p>
+      <p class="text-contingut">L'equip està integrat per professionals de:</p>
+      <ul class="llista-equip">
+        <li><i class="fas fa-hands-helping"></i> Atenció directa i suport assistencial</li>
+        <li><i class="fas fa-spa"></i> Fisioteràpia</li>
+        <li><i class="fas fa-puzzle-piece"></i> Teràpia ocupacional</li>
+        <li><i class="fas fa-brain"></i> Psicologia</li>
+        <li><i class="fas fa-hand-holding-heart"></i> Treball social</li>
+        <li><i class="fas fa-chart-line"></i> Direcció i gestió administrativa</li>
+      </ul>
+      <p class="text-contingut">
+        El treball en equip, la coordinació interdisciplinària i la comunicació constant amb les famílies són una part essencial de la nostra manera de treballar.
+      </p>
+    </section>
+
+    <!-- QUÈ OFERIM -->
+    <section class="seccio-contingut animacio-desplacament">
+      <h2 class="titol-seccio">
+        <i class="fas fa-gift"></i>
+        Què oferim
+      </h2>
+      <p class="text-contingut">
+        Oferim una atenció integral orientada al desenvolupament de les capacitats personals, socials i ocupacionals de cada persona, treballant perquè cadascuna pugui assolir el màxim nivell d'autonomia, participació activa i benestar personal i social possible, dins d'un entorn segur, estructurat, significatiu i adaptat a les seves necessitats.
+      </p>
+      <p class="text-contingut">Les principals àrees d'intervenció són:</p>
+      <ul class="llista-serveis">
+        <li><i class="fas fa-handshake"></i> Ajustament personal i social</li>
+        <li><i class="fas fa-puzzle-piece"></i> Teràpia ocupacional</li>
+        <li><i class="fas fa-hands"></i> Activitats manipulatives i funcionals</li>
+        <li><i class="fas fa-user-graduate"></i> Desenvolupament de l'autonomia personal</li>
+        <li><i class="fas fa-brain"></i> Estimulació cognitiva i comunicativa</li>
+        <li><i class="fas fa-paint-brush"></i> Activitats creatives i expressives</li>
+        <li><i class="fas fa-users"></i> Participació comunitària i inclusió social</li>
+        <li><i class="fas fa-adjust"></i> Suports individualitzats i adaptacions específiques</li>
+      </ul>
+      <p class="text-contingut">
+        Per desenvolupar aquesta intervenció disposem d'una àmplia varietat de tallers ocupacionals adaptats als interessos i capacitats de les persones ateses, com ara: informàtica i ordinadors, copisteria, trituració de paper, costura, manipulació, dansa adaptada, cuina i cafeteria, hort i jardineria, activitats de moviment i tasques relacionades amb la separació de residus i el reciclatge.
+      </p>
+      <div class="destacat">
+        <i class="fas fa-info-circle"></i> Són funcions primordials del servei l'ajustament personal i social i la teràpia ocupacional.
+      </div>
+      <p class="text-contingut">
+        També promovem la participació en activitats extraordinàries i comunitàries, com sortides, excursions, vacances i activitats culturals i esportives de la comarca, afavorint la inclusió social, les relacions interpersonals i la vinculació amb l'entorn.
+      </p>
+      <p class="text-contingut">
+        A més, complementem l'atenció amb activitats específiques de caràcter terapèutic i vivencial, com la teràpia assistida amb gossos, la musicoteràpia, el teatre, els esports adaptats i la piscina terapèutica i lúdica.
+      </p>
+      <p class="text-contingut">
+        Totes les activitats es desenvolupen amb els suports necessaris perquè cada persona pugui participar-hi de manera activa, significativa i ajustada a les seves possibilitats.
+      </p>
+
+      <!-- Programa d'Esports (integrat dins de Què oferim) -->
+      <h3 style="color: var(--color-principal); margin: 2rem 0 1rem 0; font-size: 1.4rem;">
+        <i class="fas fa-running"></i> Programa d'Esports
+      </h3>
+      <p class="text-contingut">
+        També comptem amb un programa d'esports on es motiva als nois/es a desenvolupar i adquirir aptituds físiques i cognitives a través de la realització d'esport, també és una eina socialitzadora molt interessant.
+      </p>
+      <div class="galeria-fotos tres-fotos animacio-desplacament-escala">
+        <div class="marc-foto animacio-escalonada">
+           <a href="esportscentreocupacional1.jpg" target="_blank">
+             <img src="esportscentreocupacional1.jpg" alt="Imatge del Centre Ocupacional - Esports">
+           </a>
+        </div>
+        <div class="marc-foto animacio-escalonada">
+          <a href="esportscentreocupacional2.jpg" target="_blank">
+             <img src="esportscentreocupacional2.jpg" alt="Imatge del Centre Ocupacional - Esports">
+          </a>
+        </div>
+        <div class="marc-foto animacio-escalonada">
+          <a href="esportscentreocupacional3.jpg" target="_blank">
+             <img src="esportscentreocupacional3.jpg" alt="Imatge del Centre Ocupacional - Esports">
+          </a>
+        </div>
+      </div>
+
+      <!-- Serveis complementaris (carruseles) -->
+      <div style="margin-top: 2rem;">
+        <div class="servei-complementari animacio-desplacament-esquerra">
+          <h3><i class="fas fa-dog"></i> Teràpia assistida amb gossos</h3>
+          <div class="carrusel-container">
+            <div class="carrusel" id="carrusel-gossos">
+              <div class="carrusel-slide">
+                <div class="carrusel-imatge">
+                  <a href="terapiagososimatge1.jpg" target="_blank">
+                    <img src="terapiagososimatge1.jpg" alt="Teràpia assistida amb gossos">
+                  </a>
+                </div>
+              </div>
+              <div class="carrusel-slide">
+                <div class="carrusel-imatge">
+                  <a href="terapiagososimatge2.jpg" target="_blank">
+                    <img src="terapiagososimatge2.jpg" alt="Teràpia assistida amb gossos">
+                  </a>
+                </div>
+              </div>
+              <div class="carrusel-slide">
+                <div class="carrusel-imatge">
+                  <a href="terapiagososimatge3.jpg" target="_blank">
+                    <img src="terapiagososimatge3.jpg" alt="Teràpia assistida amb gossos">
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="carrusel-controls">
+              <button class="carrusel-btn" onclick="canviarSlide('carrusel-gossos', -1)">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <button class="carrusel-btn" onclick="canviarSlide('carrusel-gossos', 1)">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+            <div class="carrusel-indicators">
+              <span class="indicator active" onclick="anarASlide('carrusel-gossos', 0)"></span>
+              <span class="indicator" onclick="anarASlide('carrusel-gossos', 1)"></span>
+              <span class="indicator" onclick="anarASlide('carrusel-gossos', 2)"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="servei-complementari animacio-desplacament">
+          <h3><i class="fas fa-theater-masks"></i> Teatre</h3>
+          <div class="carrusel-container">
+            <div class="carrusel" id="carrusel-teatre">
+              <div class="carrusel-slide">
+                <div class="carrusel-imatge">
+                  <a href="teatre1.jpg" target="_blank">
+                    <img src="teatre1.jpg" alt="Sessions de teatre">
+                  </a>
+                </div>
+              </div>
+              <div class="carrusel-slide">
+                <div class="carrusel-imatge">
+                  <a href="teatre2.jpg" target="_blank">
+                    <img src="teatre2.jpg" alt="Sessions de teatre">
+                  </a>
+                </div>
+              </div>
+              <div class="carrusel-slide">
+                <div class="carrusel-imatge">
+                  <a href="teatre3.jpg" target="_blank">
+                    <img src="teatre3.jpg" alt="Sessions de teatre">
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="carrusel-controls">
+              <button class="carrusel-btn" onclick="canviarSlide('carrusel-teatre', -1)">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <button class="carrusel-btn" onclick="canviarSlide('carrusel-teatre', 1)">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+            <div class="carrusel-indicators">
+              <span class="indicator active" onclick="anarASlide('carrusel-teatre', 0)"></span>
+              <span class="indicator" onclick="anarASlide('carrusel-teatre', 1)"></span>
+              <span class="indicator" onclick="anarASlide('carrusel-teatre', 2)"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="servei-complementari animacio-desplacament-dreta">
+          <h3><i class="fas fa-music"></i> Musicoteràpia</h3>
+          <div class="carrusel-container">
+            <div class="carrusel" id="carrusel-musica">
+              <div class="carrusel-slide">
+                <div class="carrusel-imatge">
+                  <a href="musicoteràpia1.jpg" target="_blank">
+                    <img src="musicoteràpia1.jpg" alt="Musicoteràpia">
+                  </a>
+                </div>
+              </div>
+              <div class="carrusel-slide">
+                <div class="carrusel-imatge">
+                  <a href="musicoteràpia2.jpg" target="_blank">
+                    <img src="musicoteràpia2.jpg" alt="Musicoteràpia">
+                  </a>
+                </div>
+              </div>
+              <div class="carrusel-slide">
+                <div class="carrusel-imatge">
+                  <a href="musicoteràpia3.jpg" target="_blank">
+                    <img src="musicoteràpia3.jpg" alt="Musicoteràpia">
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="carrusel-controls">
+              <button class="carrusel-btn" onclick="canviarSlide('carrusel-musica', -1)">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <button class="carrusel-btn" onclick="canviarSlide('carrusel-musica', 1)">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+            <div class="carrusel-indicators">
+              <span class="indicator active" onclick="anarASlide('carrusel-musica', 0)"></span>
+              <span class="indicator" onclick="anarASlide('carrusel-musica', 1)"></span>
+              <span class="indicator" onclick="anarASlide('carrusel-musica', 2)"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COM TREBALLEM -->
+    <section class="seccio-contingut animacio-desplacament">
+      <h2 class="titol-seccio">
+        <i class="fas fa-chalkboard-user"></i>
+        Com treballem
+      </h2>
+      <p class="text-contingut">
+        Treballem des d'un model d'atenció centrada en la persona, adaptant els suports, les activitats i els objectius a les necessitats, interessos i capacitats individuals de cada persona atesa. Acompanyem cada persona en el seu procés de desenvolupament personal i ocupacional dins d'un entorn participatiu i inclusiu, on pugui sentir-se valorada, escoltada i protagonista del seu propi procés.
+      </p>
+      <p class="text-contingut">
+        Mitjançant activitats significatives i contextualitzades, potenciem les habilitats funcionals, socials i relacionals, afavorint l'autonomia, el benestar emocional i la participació activa en la vida quotidiana i comunitària.
+      </p>
+      <p class="text-contingut">
+        Entenem l'acompanyament com un procés compartit amb les famílies i amb els diferents professionals vinculats a la persona, treballant en equip per oferir una atenció coherent, global i de qualitat.
+      </p>
+      <p class="text-contingut">
+        El nostre objectiu és afavorir el màxim grau d'autonomia, benestar i participació social possible, respectant sempre la dignitat, els drets i el projecte vital de cada persona.
+      </p>
+    </section>
+
+    <section class="seccio-contingut animacio-desplacament">
+      <div class="destacat">
+        <i class="fas fa-info-circle"></i>
+        Per a més informació podeu veure la Carta de Serveis del nostre Centre Ocupacional
+      </div>
+    </section>
+  </main>
+
+  <footer id="peu-pagina-espiga" class="animacio-desplacament">
+    <div class="contenidor-peu-pagina-espiga">
+      <div class="bloc-peu-pagina-espiga animacio-desplacament-esquerra animacio-escalonada">
+        <h3><i class="fas fa-address-book"></i> Contacte</h3>
+        <p><i class="fas fa-map-marker-alt"></i> Carrer d'Eugeni d'Ors, 62<br>08720 Vilafranca del Penedès<br>Barcelona</p>
+        <p><i class="fas fa-phone"></i> <a href="tel:938172748">938 17 27 48</a></p>
+        <p><i class="fas fa-envelope"></i> <a href="mailto:espiga@fundaciolespiga.cat">espiga@fundaciolespiga.cat</a></p>
+      </div>
+      <div class="bloc-peu-pagina-espiga animacio-desplacament animacio-escalonada">
+        <h3><i class="fas fa-concierge-bell"></i> Serveis</h3>
+        <ul>
+          <li><i class="fas fa-child"></i> <a href="CDIAPs.html">CDIAPs</a></li>
+          <li><i class="fas fa-school"></i> <a href="escolta-delta-espiga.html">Escola Delta-Espiga</a></li>
+          <li><i class="fas fa-sun"></i> <a href="centre-de-dia.html">Centre de Dia</a></li>
+          <li><i class="fas fa-home"></i> <a href="acolliment-residencial.html">Acollida Residencial</a></li>
+          <li><i class="fas fa-tools"></i> <a href="centre-ocupacional.html">Centre Ocupacional</a></li>
+          <li><i class="fas fa-heart"></i> <a href="respir.html">Respir</a></li>
+        </ul>
+      </div>
+      <div class="bloc-peu-pagina-espiga animacio-desplacament animacio-escalonada">
+        <h3><i class="fas fa-text-height"></i> Mida de la lletra</h3>
+        <div class="controls-text-espiga">
+          <button onclick="decreaseFontSize()" aria-label="Disminuir mida de lletra"><i class="fas fa-minus"></i> A</button>
+          <button onclick="normalFontSize()" style="font-weight: bold;" aria-label="Mida de lletra per defecte">A</button>
+          <button onclick="increaseFontSize()" aria-label="Augmentar mida de lletra"><i class="fas fa-plus"></i> A</button>
+        </div>
+      </div>
+    </div>
+    <div class="peu-pagina-inferior-espiga animacio-desplacament">
+      <p> La teva col·laboració és clau per continuar avançant | <a href="col·labora.html">Col·labora amb l'Espiga</a></p>
+      <p>© 2026 Fundació l'Espiga | <a href="avislegal.html">Avís legal</a> | <a href="política-de-privacitat.html"> Política de Privacitat</a></p>
+    </div>
+  </footer>
+
+<script>
+    const baseSizes = { body: 16, h1: 32, h2: 38, h3: 20, p: 16, li: 16 };
+    let scaleFactor = 1;
+    function increaseFontSize() { scaleFactor = Math.min(scaleFactor + 0.1, 1.3); applyFontSizes(); }
+    function decreaseFontSize() { scaleFactor = Math.max(scaleFactor - 0.1, 0.8); applyFontSizes(); }
+    function normalFontSize() { scaleFactor = 1; applyFontSizes(); }
+    function applyFontSizes() {
+      document.body.style.fontSize = (baseSizes.body * scaleFactor) + 'px';
+      document.querySelectorAll('h1').forEach(el => { el.style.fontSize = (baseSizes.h1 * scaleFactor) + 'px'; });
+      document.querySelectorAll('h2').forEach(el => { el.style.fontSize = (baseSizes.h2 * scaleFactor) + 'px'; });
+      document.querySelectorAll('h3').forEach(el => { el.style.fontSize = (baseSizes.h3 * scaleFactor) + 'px'; });
+      document.querySelectorAll('p').forEach(el => { el.style.fontSize = (baseSizes.p * scaleFactor) + 'px'; });
+      document.querySelectorAll('li').forEach(el => { el.style.fontSize = (baseSizes.li * scaleFactor) + 'px'; });
+    }
+    function savePreference() { localStorage.setItem('fontScaleFactor', scaleFactor); }
+    function loadPreference() { const saved = localStorage.getItem('fontScaleFactor'); if (saved) { scaleFactor = parseFloat(saved); applyFontSizes(); } }
+    const originalIncrease = increaseFontSize;
+    const originalDecrease = decreaseFontSize;
+    const originalNormal = normalFontSize;
+    increaseFontSize = function() { originalIncrease(); savePreference(); };
+    decreaseFontSize = function() { originalDecrease(); savePreference(); };
+    normalFontSize = function() { originalNormal(); savePreference(); };
+    window.addEventListener('load', loadPreference);
+
+    const carruseles = { 'carrusel-gossos': 0, 'carrusel-teatre': 0, 'carrusel-musica': 0 };
+
+    function canviarSlide(carruselId, direccio) {
+      const carrusel = document.getElementById(carruselId);
+      const slides = carrusel.querySelectorAll('.carrusel-slide');
+      const indicators = carrusel.parentElement.querySelectorAll('.indicator');
+      carruseles[carruselId] += direccio;
+      if (carruseles[carruselId] < 0) { carruseles[carruselId] = slides.length - 1; }
+      else if (carruseles[carruselId] >= slides.length) { carruseles[carruselId] = 0; }
+      const offset = -carruseles[carruselId] * 100;
+      slides.forEach(slide => { slide.style.transform = `translateX(${offset}%)`; });
+      indicators.forEach((indicator, index) => { indicator.classList.toggle('active', index === carruseles[carruselId]); });
+    }
+
+    function anarASlide(carruselId, slideIndex) {
+      const carrusel = document.getElementById(carruselId);
+      const slides = carrusel.querySelectorAll('.carrusel-slide');
+      const indicators = carrusel.parentElement.querySelectorAll('.indicator');
+      carruseles[carruselId] = slideIndex;
+      const offset = -slideIndex * 100;
+      slides.forEach(slide => { slide.style.transform = `translateX(${offset}%)`; });
+      indicators.forEach((indicator, index) => { indicator.classList.toggle('active', index === slideIndex); });
+    }
+
+    setInterval(() => {
+      Object.keys(carruseles).forEach(carruselId => { canviarSlide(carruselId, 1); });
+    }, 5000);
+
+    const opcionsObservador = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+    const observador = new IntersectionObserver((entrades) => {
+      entrades.forEach(entrada => { if (entrada.isIntersecting) { entrada.target.classList.add('animar'); } });
+    }, opcionsObservador);
+    document.querySelectorAll('.animacio-desplacament, .animacio-desplacament-esquerra, .animacio-desplacament-dreta, .animacio-desplacament-escala').forEach(el => { observador.observe(el); });
+
+    function actualitzarProgresDesplacament() {
+      const desplacamentSuperior = window.pageYOffset;
+      const alturaDocument = document.body.scrollHeight - window.innerHeight;
+      const percentatgeDesplacament = (desplacamentSuperior / alturaDocument) * 100;
+      document.querySelector('.progres-desplacament').style.width = percentatgeDesplacament + '%';
+    }
+    function actualitzarParallax() {
+      const desplacat = window.pageYOffset;
+      document.querySelectorAll('.element-parallax').forEach(element => {
+        element.style.transform = `translateY(${-(desplacat * 0.5)}px)`;
+      });
+    }
+    function alternarDesplacarADalt() {
+      const botoDesplacarADalt = document.querySelector('.desplacar-a-dalt');
+      if (window.pageYOffset > 300) { botoDesplacarADalt.classList.add('visible'); }
+      else { botoDesplacarADalt.classList.remove('visible'); }
+    }
+    function desplacarADalt() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    window.addEventListener('scroll', () => { actualitzarProgresDesplacament(); actualitzarParallax(); alternarDesplacarADalt(); });
+    document.querySelectorAll('a[href^="#"]').forEach(ancora => {
+      ancora.addEventListener('click', function (e) {
+        e.preventDefault();
+        const objectiu = document.querySelector(this.getAttribute('href'));
+        if (objectiu) { objectiu.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.animacio-desplacament, .animacio-desplacament-esquerra, .animacio-desplacament-dreta, .animacio-desplacament-escala').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) { el.classList.add('animar'); }
+      });
+    });
+    function toggleMenu() { const menu = document.getElementById('menu'); menu.classList.toggle('show'); }
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', () => { const menu = document.getElementById('menu'); menu.classList.remove('show'); });
+    });
+</script>
+</body>
+</html>
