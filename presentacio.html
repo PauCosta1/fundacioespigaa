@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Presentació - Fundació L'Espiga</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+        --color-principal: #de6225;
+        --color-secundari: #FDF6E3;
+        --color-destacat: #c55520;
+        --color-text: #000000;
+        --tipografia-principal: 'Segoe UI', sans-serif;
+        --textura-fons: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: var(--tipografia-principal);
+        background-color: var(--color-secundari);
+        color: var(--color-text);
+        background-image: var(--textura-fons);
+        background-blend-mode: multiply;
+        line-height: 1.6;
+        position: relative;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        font-size: clamp(14px, 4vw, 16px);
+    }
+
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(rgba(255, 255, 255, 0.1), transparent 80%);
+        z-index: -2;
+    }
+
+    .barra-contacte {
+        background: linear-gradient(135deg, #c55520 0%, #b54a1c 100%);
+        color: white;
+        padding: 8px 0;
+        font-size: clamp(0.8rem, 3vw, 0.9rem);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        z-index: 1001;
+    }
+
+    .contingut-barra-contacte {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+    }
+
+    .informacio-contacte {
+        display: flex;
+        gap: clamp(15px, 4vw, 30px);
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .element-contacte {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        padding: 8px 12px;
+        border-radius: 4px;
+        min-height: 44px;
+    }
+
+    .element-contacte:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-1px);
+    }
+
+    .element-contacte i {
+        color: #f5a573;
+        font-size: 1rem;
+        min-width: 20px;
+    }
+
+    .element-contacte a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+        display: flex;
+        align-items: center;
+    }
+
+    .element-contacte a:hover {
+        color: #f5a573;
+    }
+
+    .enllacos-socials {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .enllac-social {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 1.1rem;
+    }
+
+    .enllac-social:hover {
+        background: #f5a573;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    header {
+        background: #e87a3f;
+        color: white;
+        padding: 1rem 0;
+        position: relative;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+    }
+
+    main {
+        flex: 1;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .contingut-capcalera {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        flex-wrap: wrap;
+        position: relative;
+    }
+
+    .inici, .presentacio, .noticies, .serveis, .col·labora, .transparencia, .contacta {
+        transition: transform 0.3s ease;
+    }
+
+    .inici:hover, .presentacio:hover, .noticies:hover, .serveis:hover,
+    .col·labora:hover, .transparencia:hover, .contacta:hover {
+        transform: scale(1.1);
+    }
+
+    .logo {
+        transition: transform 0.3s ease;
+        z-index: 1001;
+    }
+
+    .logo:hover {
+        transform: scale(1.1);
+    }
+
+    .logo-espiga {
+        display: block;
+        height: clamp(50px, 10vw, 70px);
+        width: auto;
+        border-radius: 10px;
+    }
+
+    .logo-espiga img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 2rem;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        min-width: 44px;
+        min-height: 44px;
+        border-radius: 8px;
+        z-index: 1001;
+    }
+
+    .menu-toggle:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .menu-toggle:active {
+        transform: scale(0.95);
+    }
+
+    nav ul {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    nav ul.show {
+        display: flex !important;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        font-size: clamp(1rem, 3vw, 1.1rem);
+        padding: 0.8rem 1.2rem;
+        transition: all 0.3s ease;
+        border-radius: 6px;
+        border: 1px solid transparent;
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+    }
+
+    nav a:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .hero-presentacio {
+        text-align: center;
+        padding: 3rem 1rem;
+        background: linear-gradient(135deg, rgba(222, 98, 37, 0.1), rgba(197, 85, 32, 0.1));
+        border-radius: 20px;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-presentacio h1 {
+        font-size: clamp(2rem, 6vw, 3.5rem);
+        color: var(--color-principal);
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero-presentacio p {
+        font-size: clamp(1rem, 4vw, 1.3rem);
+        color: var(--color-destacat);
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .marc-hero {
+        width: clamp(120px, 20vw, 200px);
+        height: clamp(120px, 20vw, 200px);
+        margin: 0 auto 2rem;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 4px solid var(--color-principal);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .marc-hero img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: white;
+        padding: 20px;
+    }
+
+    .hero-slogans {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+    }
+
+    .hero-slogan {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        background: white;
+        border: 2px solid var(--color-principal);
+        border-radius: 50px;
+        padding: 0.6rem 1.8rem;
+        font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+        font-weight: 700;
+        color: var(--color-principal);
+        letter-spacing: 0.3px;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 10px rgba(222, 98, 37, 0.15);
+        cursor: pointer;
+    }
+
+    .hero-slogan:hover {
+        background: var(--color-principal);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(222, 98, 37, 0.3);
+    }
+
+    .hero-slogan:hover .slogan-icon {
+        color: white;
+    }
+
+    .slogan-icon {
+        font-size: clamp(1rem, 3vw, 1.3rem);
+        color: var(--color-destacat);
+        transition: color 0.3s ease;
+        flex-shrink: 0;
+    }
+
+    /* VISOR FOTOS INTERACTIU */
+    .contenedor-fotos-interactivas {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 280px;
+    }
+    
+    .foto-interactiva {
+        max-width: 100%;
+        max-height: 300px;
+        width: auto;
+        height: auto;
+        border-radius: 24px;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+        border: 3px solid white;
+        transition: all 0.3s ease;
+        display: none;
+        object-fit: cover;
+        background: #fff0e0;
+    }
+    
+    .foto-interactiva.activa {
+        display: block;
+        animation: fadeSlide 0.4s ease-out;
+    }
+    
+    @keyframes fadeSlide {
+        0% { opacity: 0; transform: translateY(12px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .seccio {
+        margin-bottom: 4rem;
+        padding: 2rem 0;
+        border-bottom: 1px solid rgba(222, 98, 37, 0.2);
+    }
+
+    .titol-seccio {
+        font-size: clamp(2rem, 5vw, 2.5rem);
+        color: var(--color-principal);
+        margin-bottom: 2rem;
+        text-align: center;
+        position: relative;
+    }
+
+    .titol-seccio::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, var(--color-principal), transparent);
+    }
+
+    .subtitol {
+        font-size: clamp(1.5rem, 4vw, 1.8rem);
+        color: var(--color-destacat);
+        margin: 2rem 0 1rem 0;
+        border-left: 4px solid var(--color-principal);
+        padding-left: 1rem;
+    }
+
+    .text-contingut {
+        font-size: clamp(1rem, 3vw, 1.1rem);
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+        text-align: justify;
+    }
+
+    .valors-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+
+    .valor-item {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid var(--color-principal);
+        transition: all 0.3s ease;
+    }
+
+    .valor-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .valor-item i {
+        color: var(--color-principal);
+        font-size: 1.5rem;
+        margin-right: 0.5rem;
+    }
+
+    .politica-qualitat {
+        background: linear-gradient(135deg, rgba(222, 98, 37, 0.1), rgba(197, 85, 32, 0.05));
+        border-radius: 15px;
+        padding: clamp(1.5rem, 4vw, 2rem);
+        margin: 2rem 0;
+    }
+
+    .missio-visio-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+    }
+
+    .missio, .visio {
+        background: white;
+        padding: clamp(1.5rem, 4vw, 2rem);
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .missio::before, .visio::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-principal), var(--color-destacat));
+    }
+
+    .missio h3, .visio h3 {
+        color: var(--color-principal);
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .patronat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+
+    .membre {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .membre:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .membre-carrec {
+        background: var(--color-principal);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        display: inline-block;
+    }
+
+    .membre-nom {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--color-destacat);
+    }
+
+    .membre small {
+        display: block;
+        margin-top: 0.5rem;
+        color: #666;
+    }
+
+    .imatge-cronologia {
+        width: 100%;
+        max-width: 1100px;
+        height: auto;
+        margin: 2rem auto;
+        display: block;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .marc-destacat {
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+        margin: 2rem auto;
+        position: relative;
+        border-radius: 20px;
+        background: linear-gradient(45deg, var(--color-principal), var(--color-destacat));
+        padding: 4px;
+    }
+
+    .marc-destacat-inner {
+        width: 100%;
+        height: 100%;
+        border-radius: 16px;
+        overflow: hidden;
+        background: white;
+        position: relative;
+    }
+
+    .marc-destacat .placeholder-imatge {
+        width: 100%;
+        height: 100%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 10px;
+    }
+
+    .marc-destacat .placeholder-imatge img {
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+        object-fit: contain;
+        object-position: center;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .agraiments {
+        background: linear-gradient(135deg, var(--color-principal), var(--color-destacat));
+        color: white;
+        padding: 2rem 1.5rem;
+        border-radius: 20px;
+        text-align: center;
+        margin: 3rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .agraiments h2 {
+        font-size: clamp(1.8rem, 5vw, 2.5rem);
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .agraiments p {
+        font-size: clamp(1rem, 3vw, 1.2rem);
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Cronologia */
+    .cronologia-wrap {
+        margin: 2.5rem 0 1rem;
+    }
+
+    .cronologia-decada {
+        margin-bottom: 2rem;
+    }
+
+    .cronologia-decada-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--color-principal);
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+        padding: 6px 20px;
+        border-radius: 20px;
+        margin-bottom: 1rem;
+    }
+
+    .cronologia-decada-label .tl-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.5);
+        flex-shrink: 0;
+    }
+
+    .cronologia-events {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cronologia-fila {
+        display: flex;
+        align-items: stretch;
+    }
+
+    .cronologia-any-col {
+        width: 60px;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cronologia-any-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--color-destacat);
+        background: #FFF3E0;
+        border: 1px solid #FFB74D;
+        border-radius: 6px;
+        padding: 3px 7px;
+        white-space: nowrap;
+        margin-top: 10px;
+        line-height: 1.4;
+    }
+
+    .cronologia-any-col .tl-linia {
+        width: 2px;
+        background: #FFD180;
+        flex: 1;
+        margin-top: 4px;
+        min-height: 8px;
+    }
+
+    .cronologia-contingut-col {
+        flex: 1;
+        padding: 8px 0 4px 14px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cronologia-card {
+        background: #ffffff;
+        border: 1px solid #FFE0B2;
+        border-left: 3px solid var(--color-principal);
+        border-radius: 0 8px 8px 0;
+        padding: 11px 16px;
+        margin-bottom: 7px;
+        font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+        color: #222;
+        line-height: 1.6;
+    }
+
+    .cronologia-card.destacat {
+        border-left: 3px solid var(--color-destacat);
+        background: #ffffff;
+        font-weight: 600;
+        color: #1a1a1a;
+    }
+
+    /* Footer */
+    #peu-pagina-espiga {
+        background: linear-gradient(135deg, #de6225 0%, #c55520 50%, #b54a1c 100%);
+        color: white;
+        font-family: 'Segoe UI', sans-serif;
+        padding: clamp(40px, 10vh, 60px) clamp(15px, 4vw, 20px) clamp(15px, 4vh, 20px);
+        position: relative;
+        overflow: hidden;
+        height: auto;
+        margin-top: auto;
+    }
+
+    #peu-pagina-espiga::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-principal), #e87a3f, var(--color-destacat));
+        box-shadow: 0 2px 8px rgba(222, 98, 37, 0.4);
+    }
+
+    .contenidor-peu-pagina-espiga {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: auto;
+        gap: clamp(25px, 6vw, 40px);
+        position: relative;
+        z-index: 1;
+    }
+
+    .bloc-peu-pagina-espiga {
+        flex: 1 1 250px;
+        min-width: 250px;
+        position: relative;
+    }
+
+    .bloc-peu-pagina-espiga h3 {
+        color: white;
+        margin-bottom: 20px;
+        font-size: clamp(1.2rem, 4vw, 1.4rem);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        position: relative;
+        padding-bottom: 12px;
+    }
+
+    .bloc-peu-pagina-espiga h3::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 2px;
+        background: linear-gradient(90deg, #f5a573, #e87a3f);
+        border-radius: 2px;
+    }
+
+    .bloc-peu-pagina-espiga ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .bloc-peu-pagina-espiga ul li {
+        margin-bottom: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .bloc-peu-pagina-espiga a {
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 0;
+        border-radius: 4px;
+        position: relative;
+        min-height: 44px;
+    }
+
+    .bloc-peu-pagina-espiga a:hover {
+        color: #f5a573;
+        background: rgba(255, 255, 255, 0.05);
+        padding-left: 8px;
+    }
+
+    .controls-text-espiga {
+        display: flex;
+        gap: 8px;
+        margin-top: 15px;
+        flex-wrap: wrap;
+    }
+
+    .controls-text-espiga button {
+        background: linear-gradient(135deg, #b54a1c, #a0421a);
+        border: none;
+        color: white;
+        padding: clamp(8px, 3vw, 10px) clamp(10px, 4vw, 14px);
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: clamp(0.9rem, 3vw, 1rem);
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(181, 74, 28, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 45px;
+        justify-content: center;
+        min-height: 44px;
+    }
+
+    .controls-text-espiga button:hover {
+        background: linear-gradient(135deg, #c55520, #b54a1c);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(197, 85, 32, 0.4);
+    }
+
+    .peu-pagina-inferior-espiga {
+        text-align: center;
+        padding-top: 30px;
+        margin-top: 40px;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        font-size: clamp(0.85rem, 3vw, 0.95rem);
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .peu-pagina-inferior-espiga a {
+        color: #f5a573;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        display: inline-block;
+        padding: 8px 4px;
+    }/* Perquè els valors es vegin en dues línies dins del mateix div */
+.valor-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.valor-item strong {
+    display: block;
+    line-height: 1.4;
+}
+
+.valor-item i {
+    margin-bottom: 0.25rem;
+}
+
+    .peu-pagina-inferior-espiga a:hover {
+        color: #ffc299;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+    }
+
+    /* Media Queries - Barra de contacto */
+    @media (max-width: 768px) {
+        .barra-contacte { padding: 6px 0; }
+        .contingut-barra-contacte {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 10px;
+            gap: 5px;
+        }
+        .informacio-contacte {
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+            flex: 1;
+            justify-content: flex-start;
+        }
+        .element-contacte { padding: 4px 6px; min-height: 36px; }
+        .element-contacte i { font-size: 0.9rem; }
+        .element-contacte a { font-size: 0.8rem; }
+        .enllacos-socials { gap: 6px; flex-shrink: 0; }
+        .enllac-social { width: 32px; height: 32px; font-size: 0.9rem; }
+    }
+
+    /* Marc blanc per a contingut amb títol */
+.marc-blanc-contingut {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.marc-blanc-contingut:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.marc-blanc-contingut .subtitol {
+    margin-top: 0;
+    border-left: 4px solid var(--color-principal);
+    padding-left: 1rem;
+}
+
+.marc-blanc-contingut p {
+    margin-bottom: 1rem;
+}
+
+/* Ajust responsiu */
+@media (max-width: 768px) {
+    .marc-blanc-contingut {
+        padding: 1.5rem;
+    }
+}
+    @media (max-width: 600px) {
+        .contingut-barra-contacte { padding: 0 8px; }
+        .informacio-contacte { gap: 5px; }
+        .element-contacte { padding: 4px 5px; }
+        .element-contacte i { font-size: 0.85rem; min-width: 18px; }
+        .element-contacte a { font-size: 0.75rem; }
+        .enllac-social { width: 30px; height: 30px; font-size: 0.85rem; }
+    }
+
+    @media (max-width: 480px) {
+        .contingut-barra-contacte { padding: 0 5px; gap: 3px; }
+        .informacio-contacte { gap: 3px; justify-content: space-around; }
+        .element-contacte { padding: 3px 4px; gap: 3px; }
+        .element-contacte i { font-size: 0.8rem; min-width: 16px; }
+        .element-contacte a { font-size: 0.7rem; }
+        .enllacos-socials { gap: 4px; }
+        .enllac-social { width: 28px; height: 28px; font-size: 0.8rem; }
+    }
+
+    @media (max-width: 1024px) {
+        .hero-presentacio h1 { font-size: 2.5rem; }
+    }
+
+    @media (max-width: 768px) {
+        .menu-toggle { display: block; }
+        nav { width: 100%; order: 3; }
+        nav ul {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            background: #dd5510;
+            border-radius: 12px;
+            margin-top: 1rem;
+            padding: 0.5rem 0;
+            position: relative;
+            z-index: 999;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        nav ul.show { display: flex !important; }
+        nav li { width: 100%; text-align: center; }
+        nav a {
+            justify-content: center;
+            padding: 1rem;
+            border-radius: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        nav li:last-child a { border-bottom: none; }
+        nav a:hover { transform: none; background: rgba(255, 255, 255, 0.2); }
+        main { padding: 1rem; }
+        .hero-presentacio { padding: 2rem 1rem; }
+        .hero-presentacio h1 { font-size: 2rem; }
+        .hero-presentacio p { font-size: 1rem; }
+        .marc-hero { width: 120px; height: 120px; }
+        .valors-grid { grid-template-columns: 1fr; }
+        .patronat-grid { grid-template-columns: 1fr; }
+        .missio-visio-grid { grid-template-columns: 1fr; }
+        .marc-destacat { max-width: 100%; }
+        .contenidor-peu-pagina-espiga { flex-direction: column; }
+        .bloc-peu-pagina-espiga { width: 100%; text-align: center; min-width: 100%; }
+        .bloc-peu-pagina-espiga h3 { justify-content: center; }
+        .bloc-peu-pagina-espiga h3::after { left: 50%; transform: translateX(-50%); }
+        .bloc-peu-pagina-espiga ul li { text-align: center; }
+        .bloc-peu-pagina-espiga ul li:hover { transform: none; }
+        .bloc-peu-pagina-espiga a { justify-content: center; }
+        .bloc-peu-pagina-espiga a:hover { padding-left: 0; }
+        .controls-text-espiga { justify-content: center; }
+        .peu-pagina-inferior-espiga { display: flex; flex-direction: column; gap: 10px; }
+
+        .hero-slogan {
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            padding: 0.55rem 1.3rem;
+        }
+        
+        .contenedor-fotos-interactivas .foto-interactiva { max-height: 220px; }
+    }
+
+    @media (max-width: 480px) {
+        .hero-presentacio h1 { font-size: 1.6rem; }
+        .titol-seccio { font-size: 1.6rem; }
+        .subtitol { font-size: 1.3rem; padding-left: 0.8rem; }
+        .text-contingut { font-size: 0.95rem; }
+        .membre-carrec { font-size: 0.9rem; }
+        .membre-nom { font-size: 1rem; }
+        .agraiments h2 { font-size: 1.5rem; }
+        .agraiments p { font-size: 0.95rem; }
+
+        .hero-slogan {
+            font-size: 1rem;
+            padding: 0.5rem 1.1rem;
+            gap: 8px;
+        }
+    }
+  </style>
+</head>
+<body>
+  <div class="barra-contacte">
+    <div class="contingut-barra-contacte">
+      <div class="informacio-contacte">
+        <div class="element-contacte">
+          <i class="fas fa-phone"></i>
+          <a href="tel:938172748">93 817 27 48</a>
+        </div>
+        <div class="element-contacte">
+          <i class="fas fa-envelope"></i>
+          <a href="mailto:espiga@fundaciolespiga.cat">espiga@fundaciolespiga.cat</a>
+        </div>
+      </div>
+      <div class="enllacos-socials">
+        <a href="https://www.facebook.com/p/CENTRE-OCUPACIONAL-LESPIGA-100083339680773/" target="_blank" class="enllac-social" aria-label="Facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://www.instagram.com/fundacioespiga/" target="_blank" class="enllac-social" aria-label="Instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <div class="contingut-capcalera">
+      <a href="index.html">
+        <div class="logo">
+          <img src="logo espiga.png" alt="Logo Fundació L'Espiga" class="logo-espiga">
+        </div>
+      </a>
+
+      <button class="menu-toggle" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <nav class="menu">
+        <ul id="menu">
+          <li class="inici"><a href="index.html">Inici</a></li>
+          <li class="presentacio"><a href="presentacio.html">Presentació</a></li>
+          <li class="serveis"><a href="serveis.html">Serveis</a></li>
+          <li class="noticies"><a href="noticies.html">Notícies</a></li>
+          <li class="col·labora"><a href="col·labora.html">Col·labora</a></li>
+          <li class="transparencia"><a href="transparencia.html">Transparència</a></li>
+          <li class="contacta"><a href="contacta.html">Contacta</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-presentacio">
+      <div class="marc-hero marc-imatge">
+        <img src="http://fundaciolespiga.com/wp-content/uploads/2021/04/logo-bo-negre1-e1618766371485.png" alt="Logo Fundació L'Espiga">
+      </div>
+      <h1><i class="fas fa-heart"></i> Fundació L'Espiga</h1>
+      <p>Una entitat sense afany de lucre, emprenedora i compromesa, sempre al costat de les persones amb discapacitat i al de les seves famílies.</p>
+
+      <div class="hero-slogans">
+        <div class="hero-slogan">Creem Oportunitats</div>
+        <div class="hero-slogan">Fomentem la inclusió</div>
+        <div class="hero-slogan">Millorem vides</div>
+      </div>
+
+      <div class="contenedor-fotos-interactivas" id="visor-fotos">
+        <img src="foto titol 1.jpg" id="foto1" class="foto-interactiva" alt="Oportunitats" onerror="this.src='https://placehold.co/600x400/de6225/white?text=Creem+Oportunitats'">
+        <img src="foto titol 2.jpeg" id="foto2" class="foto-interactiva" alt="Inclusió" onerror="this.src='https://placehold.co/600x400/de6225/white?text=Fomentem+Inclusió'">
+        <img src="foto titol 3.jpg" id="foto3" class="foto-interactiva" alt="Vides" onerror="this.src='https://placehold.co/600x400/de6225/white?text=Millorem+Vides'">
+      </div>
+    </section>
+
+    <section class="seccio">
+ <div class="marc-blanc-contingut">
+    <h3 class="subtitol"><i class="fas fa-timeline"></i> La nostra raó de ser</h3>
+    <p>Des de Vilafranca del Penedès, i amb presència a altres municipis de l'Alt i el Baix Penedès, treballem cada dia perquè ningú quedi exclòs i perquè totes les persones puguin desenvolupar al màxim les seves capacitats i participar plenament en la societat.</p>
+    
+    <p>El nostre propòsit és transformar necessitats en accions, crear oportunitats i millorar la qualitat de vida de les persones amb discapacitat. Ho fem mitjançant serveis terapèutics, educatius, ocupacionals, de dia i residencials que promouen l'autonomia personal i la participació en la comunitat.</p>
+    
+    <p>Creiem en les capacitats de totes les persones i defensem el seu dret a una vida plena, amb oportunitats i reconeixement dins la societat. A la Fundació L'Espiga, cada projecte i cada servei té un objectiu clar: generar impacte positiu en la vida de les persones i contribuir a una comunitat més justa i inclusiva.</p>
+</div>
+
+<div class="marc-blanc-contingut">
+    <h3 class="subtitol"><i class="fas fa-timeline"></i> La nostra història</h3>
+    <p>Constituïda l'any 1991, inscrita al Registre de Fundacions del Departament de Justícia amb el número 595, la Fundació L'Espiga està subjecta a la Llei Catalana 1/1982, de 3 de març, de fundacions privades.</p>
+    
+    <p>Des dels seus inicis, a partir d'una antiga escola i d'un centre de paràlisi cerebral, impulsats per famílies, l'entitat ha crescut de manera sostinguda fins a esdevenir una fundació de referència.</p>
+</div>
+
+      <!-- CRONOLOGIA -->
+      <div class="cronologia-wrap">
+
+        <!-- Dècada de 1980 -->
+        <div class="cronologia-decada">
+          <div class="cronologia-decada-label"><span class="tl-dot"></span>Dècada de 1980</div>
+          <div class="cronologia-events">
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">1983</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Creació del Centre de Paràlisi Cerebral L'Espiga.</div></div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">1984</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Constitució legal de l'Associació Comarcal Pro-disminuïts de l'Alt Penedès.</div></div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">1986</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Unificació del Centre de Paràlisi Cerebral L'Espiga i Escola Delta.</div></div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">1989</div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Inauguració del Servei d'Atenció Precoç L'Espiga (SAPE). Actualment CDIAP.</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dècada de 1990 -->
+        <div class="cronologia-decada">
+          <div class="cronologia-decada-label"><span class="tl-dot"></span>Dècada de 1990</div>
+          <div class="cronologia-events">
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">1990</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Inicia l'activitat el Centre Ocupacional L'Espiga (COE).</div></div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">1991</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Constitució de la Fundació L'Espiga. Col·locació de la primera pedra de l'actual edifici.</div></div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">1993</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Inauguració de les noves instal·lacions: trasllat de l'Escola Delta-Espiga i el COE.</div></div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">1996</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">L'Associació declarada d'utilitat pública pel Ministeri de l'Interior (18 de desembre).</div></div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">1998</div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Inauguració de la Residència L'Espiga (15 places).</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dècada de 2000 -->
+        <div class="cronologia-decada">
+          <div class="cronologia-decada-label"><span class="tl-dot"></span>Dècada de 2000</div>
+          <div class="cronologia-events">
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2000</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col">
+                <div class="cronologia-card">Obertura del Servei de Suport Social als Serveis Socials Especialitzats del CDIAPE de Gelida.</div>
+                <div class="cronologia-card">Canvi de nom a Associació Pro Disminuïts del Penedès.</div>
+              </div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2001</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Obertura del Servei de Suport Social als Serveis Socials Especialitzats del CDIAPE de Sant Sadurní d'Anoia.</div></div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2002</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Comença el servei de voluntariat.</div></div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2003</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Inauguració del CDIAP Baix Penedès.</div></div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2004</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Inici del servei Sirius - L'Espiga.</div></div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2005</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Habilitació del pis de respir i creació del servei de Centre de Dia.</div></div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2006</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Inauguració del servei de rehabilitació.</div></div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2007</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Ampliació de 4 places residencials al barri de la Girada.</div></div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2008</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Ampliació de l'espai CDIAPE de Vilafranca.</div></div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2009</div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Inauguració de la Residència Graupera (12 places).</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dècada de 2010 -->
+        <div class="cronologia-decada">
+          <div class="cronologia-decada-label"><span class="tl-dot"></span>Dècada de 2010</div>
+          <div class="cronologia-events">
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2010</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col">
+                <div class="cronologia-card">Tancament del pis de respir.</div>
+                <div class="cronologia-card">Adquisició d'un pis al barri Poble Nou (4 places), amb trasllat des de la Girada.</div>
+              </div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2011</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col">
+                <div class="cronologia-card">Inauguració de la pista esportiva.</div>
+                <div class="cronologia-card">Inauguració de l'aulari.</div>
+              </div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2012</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col">
+                <div class="cronologia-card">Canvi de nom a Associació L'Espiga Penedès.</div>
+                <div class="cronologia-card">Construcció d'una zona d'esbarjo per l'alumnat.</div>
+              </div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2013</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Inici de les obres d'ampliació de l'aulari pels serveis escolars.</div></div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2015</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Inauguració del nou edifici de l'Escola Delta - Espiga.</div></div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2016</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Inici de les obres d'ampliació de la Residència Graupera (8 places).</div></div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2018</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col">
+                <div class="cronologia-card">L'Associació L'Espiga Penedès cedeix la gestió dels serveis a la Fundació L'Espiga.</div>
+                <div class="cronologia-card">El servei de rehabilitació passa a ser gestionat pel Consorci Sanitari del Penedès i Garraf.</div>
+              </div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2019</div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Finalització de les obres d'ampliació de la Residència Graupera (8 places).</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dècada de 2020 -->
+        <div class="cronologia-decada">
+          <div class="cronologia-decada-label"><span class="tl-dot"></span>Dècada de 2020</div>
+          <div class="cronologia-events">
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2023</div><div class="tl-linia"></div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Ampliació del concert de places de la Residència Graupera.</div></div>
+            </div>
+            <div class="cronologia-fila">
+              <div class="cronologia-any-col"><div class="cronologia-any-label">2025</div></div>
+              <div class="cronologia-contingut-col"><div class="cronologia-card">Inauguració del poliesportiu.</div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- FI CRONOLOGIA -->
+
+    </section>
+
+    <section class="seccio">
+      <h2 class="titol-seccio"><i class="fas fa-award"></i> Política de Qualitat</h2>
+
+      <div class="marc-destacat marc-imatge">
+        <div class="marc-destacat-inner">
+          <div class="placeholder-imatge">
+            <img src="certificat.jpg" alt="Certificat ISO 9001:2015 de Qualitat" onerror="this.src='https://placehold.co/500x300/de6225/white?text=ISO+9001'">
+          </div>
+        </div>
+      </div>
+
+      <div class="politica-qualitat">
+        <div class="missio-visio-grid">
+          <div class="missio">
+            <h3><i class="fas fa-bullseye"></i> Missió</h3>
+            <p>Vetllar per la qualitat de vida de les persones amb discapacitat i de les seves famílies, impulsant la seva atenció, formació, autonomia personal i inclusió social.</p>
+          </div>
+
+          <div class="visio">
+            <h3><i class="fas fa-eye"></i> Visió</h3>
+            <p>La Fundació L'Espiga vol ser un referent en l'atenció integral a les persones amb discapacitat en tot el seu cicle vital, facilitant-los les eines perquè en la mesura de les seves possibilitats esdevinguin autònoms i puguin participar en els diferents àmbits de la vida quotidiana.</p>
+          </div>
+        </div>
+
+        <h3 class="subtitol"><i class="fas fa-heart"></i> Valors</h3>
+        <div class="valors-grid">
+          <div class="valor-item">
+            <i class="fas fa-handshake"></i>
+            <strong>Compromís i solidaritat</strong>
+            <strong></strong>
+          </div>
+          <div class="valor-item">
+            <i class="fas fa-users"></i>
+            <strong>Inclusió Social</strong>
+          </div>
+          <div class="valor-item">
+            <i class="fas fa-heart"></i>
+            <strong>Tolerància, respecte i tracte humà</strong>
+          </div>
+          <div class="valor-item">
+            <i class="fas fa-shield-alt"></i>
+            <strong>Responsabilitat i transparència</strong>
+          </div>
+          <div class="valor-item">
+            <i class="fas fa-graduation-cap"></i>
+            <strong>Professionalitat i rigor</strong>
+          </div>
+          <div class="valor-item">
+            <i class="fas fa-user-check"></i>
+            <strong>Atenció individualitzada</strong>
+          </div>
+          <div class="valor-item">
+            <i class="fas fa-people-arrows"></i>
+            <strong>Treball en equip</strong>
+          </div>
+          <div class="valor-item">
+            <i class="fas fa-star"></i>
+            <strong>Organització de qualitat</strong>
+          </div>
+          <div class="valor-item">
+            <i class="fas fa-lightbulb"></i>
+            <strong>Innovació i creativitat</strong>
+          </div>
+        </div>
+
+        <div class="text-contingut">
+          <p><strong>La Política de Qualitat és la mateixa per a tots els serveis de la Fundació i ha estat revisada per Direcció amb data 15/01/2025.</strong></p>
+          <p>L'entitat disposa d'un <a href="CODI-ETICA-ESPIGA-FUNDACIÓ.pdf">Codi d'Ètica</a> redactat a l'any 2002 amb última revisió al 2024.</p>
+          <p>També comptem amb un <a href="I-PLA-DIGUALTAT-SIGNAT.pdf">Pla d'Igualtat</a>.</p>
+        </div>
+      </div>
+    </section>
+<h2 class="titol-seccio"><i class="fas fa-users-cog"></i> Òrgans de Govern</h2>
+      <h3 class="subtitol">Patronat</h3>
+      <div class="patronat-grid">
+        <div class="membre">
+          <div class="membre-carrec">President</div>
+          <div class="membre-nom">Francisco Romero Gamarra</div>
+          <small>(Alcalde de Vilafranca)</small>
+        </div>
+        <div class="membre">
+          <div class="membre-carrec">Vicepresident</div>
+          <div class="membre-nom">Xavier Lluch Llopart</div>
+          <small>(President del Consell Comarcal)</small>
+        </div>
+        <div class="membre">
+          <div class="membre-carrec">Secretari</div>
+          <div class="membre-nom">Joan Ràfols Martí</div>
+        </div>
+        <div class="membre">
+          <div class="membre-carrec">Vocal</div>
+          <div class="membre-nom">Jaume Milà Fontanals</div>
+        </div>
+        <div class="membre">
+          <div class="membre-carrec">Vocal</div>
+          <div class="membre-nom">Josep Maria Padullés Altisent</div>
+        </div>
+        <div class="membre">
+          <div class="membre-carrec">Vocal</div>
+          <div class="membre-nom">Celestino López Martín</div>
+        </div>
+        <div class="membre">
+          <div class="membre-carrec">Vocal</div>
+          <div class="membre-nom">Susanna de Lamor Alemany</div>
+        </div>
+      </div>
+    </section>
+
+     <section class="seccio">
+
+      <h3 class="subtitol">Comissió Executiva</h3>
+      <div class="text-contingut">
+        <p>La Comissió Executiva és l'òrgan encarregat, dins de les seves facultats, del govern i representació ordinaris de la Fundació.</p>
+      </div>
+
+      <div class="patronat-grid">
+        <div class="membre">
+          <div class="membre-carrec">President</div>
+          <div class="membre-nom">Montserrat Roca Conejo</div>
+        </div>
+        <div class="membre">
+          <div class="membre-carrec">Vicepresident</div>
+          <div class="membre-nom">Celestino López Martín</div>
+        </div>
+        <div class="membre">
+          <div class="membre-carrec">Secretaria</div>
+          <div class="membre-nom">Alma Mª Rodríguez Carrión</div>
+        </div>
+        <div class="membre">
+          <div class="membre-carrec">Vocal</div>
+          <div class="membre-nom">Joan Piñol Tuya</div>
+        </div>
+        <div class="membre">
+          <div class="membre-carrec">Vocal</div>
+          <div class="membre-nom">Imma Castillo Madero</div>
+        </div>
+        <div class="membre">
+          <div class="membre-carrec">Vocal</div>
+          <div class="membre-nom">Lluís Lorca Campamà</div>
+        </div>
+        <div class="membre">
+          <div class="membre-carrec">Vocal</div>
+          <div class="membre-nom">Ana Mª Sobrino Terreros</div>
+        </div>
+        <div class="membre">
+          <div class="membre-carrec">Vocal</div>
+          <div class="membre-nom">Susanna de Lamor Alemany</div>
+        </div>
+      </div>
+
+      <div class="text-contingut">
+        <p>El govern i la representació de la Fundació correspon al Patronat i, per delegació d'aquest a la Comissió Executiva, exceptuant les que la Llei i/o els Estatuts situen com a indelegables.</p>
+      </div>
+
+    <section class="agraiments">
+      <h2><i class="fas fa-hands-helping"></i> Agraïments</h2>
+      <p>LA FUNDACIÓ L'ESPIGA dona les gràcies a institucions públiques i privades, entitats, empreses, famílies, persones usuàries, professionals, persones voluntàries… que ens han ajudat a arribar fins aquí. A tots us expressem el nostre reconeixement i us animem a seguir col·laborant amb el nostre projecte.</p>
+    </section>
+  </main>
+
+  <footer id="peu-pagina-espiga">
+    <div class="contenidor-peu-pagina-espiga">
+      <div class="bloc-peu-pagina-espiga">
+        <h3><i class="fas fa-address-book"></i> Contacte</h3>
+        <p><i class="fas fa-map-marker-alt"></i> Carrer d'Eugeni d'Ors, 62<br>08720 Vilafranca del Penedès<br>Barcelona</p>
+        <p><i class="fas fa-phone"></i> <a href="tel:938172748">938 17 27 48</a></p>
+        <p><i class="fas fa-envelope"></i> <a href="mailto:espiga@fundaciolespiga.cat">espiga@fundaciolespiga.cat</a></p>
+      </div>
+
+      <div class="bloc-peu-pagina-espiga animacio-desplacament animacio-escalonada">
+        <h3><i class="fas fa-concierge-bell"></i> Serveis</h3>
+        <ul>
+          <li><i class="fas fa-child"></i> <a href="CDIAPs.html">CDIAPs</a></li>
+          <li><i class="fas fa-school"></i> <a href="escolta-delta-espiga.html">Escola Delta-Espiga</a></li>
+          <li><i class="fas fa-sun"></i> <a href="centre-de-dia.html">Centre de Dia</a></li>
+          <li><i class="fas fa-home"></i> <a href="acolliment-residencial.html">Acollida Residencial</a></li>
+          <li><i class="fas fa-tools"></i> <a href="centre-ocupacional.html">Centre Ocupacional</a></li>
+          <li><i class="fas fa-heart"></i> <a href="respir.html">Respir</a></li>
+        </ul>
+      </div>
+
+      <div class="bloc-peu-pagina-espiga">
+        <h3><i class="fas fa-text-height"></i> Mida de la lletra</h3>
+        <div class="controls-text-espiga">
+          <button onclick="decreaseFontSize()" aria-label="Disminuir mida de lletra"><i class="fas fa-minus"></i> A</button>
+          <button onclick="normalFontSize()" style="font-weight: bold;" aria-label="Mida de lletra per defecte">A</button>
+          <button onclick="increaseFontSize()" aria-label="Augmentar mida de lletra"><i class="fas fa-plus"></i> A</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="peu-pagina-inferior-espiga animacio-desplacament">
+      <p> La teva col·laboració és clau per continuar avançant | <a href="col·labora.html">Col·labora amb l'Espiga</a></p>
+      <p>© 2026 Fundació l'Espiga | <a href="avislegal.html">Avís legal</a> | <a href="política-de-privacitat.html"> Política de Privacitat</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // Funcionalitat fotos: mostrar imatge segons quin títol es fa clic
+    function mostrarFoto(fotoId) {
+        document.querySelectorAll('.foto-interactiva').forEach(img => {
+            img.classList.remove('activa');
+        });
+        const fotoActiva = document.getElementById('foto' + fotoId);
+        if (fotoActiva) fotoActiva.classList.add('activa');
+    }
+    
+    // Assignar esdeveniments de clic als tres eslògans
+    document.querySelectorAll('.hero-slogan').forEach((slogan, index) => {
+        slogan.addEventListener('click', () => {
+            mostrarFoto(index + 1);
+        });
+    });
+    
+    // Mostrar la primera foto per defecte en carregar la pàgina
+    window.addEventListener('DOMContentLoaded', () => {
+        mostrarFoto(1);
+    });
+    
+    // Controles de mida de lletra
+    const baseSizes = { body: 16, h1: 32, h2: 38, h3: 20, p: 16, li: 16 };
+    let scaleFactor = 1;
+    function applyFontSizes() {
+        document.body.style.fontSize = (baseSizes.body * scaleFactor) + 'px';
+        document.querySelectorAll('h1').forEach(el => { el.style.fontSize = (baseSizes.h1 * scaleFactor) + 'px'; });
+        document.querySelectorAll('h2').forEach(el => { el.style.fontSize = (baseSizes.h2 * scaleFactor) + 'px'; });
+        document.querySelectorAll('h3').forEach(el => { el.style.fontSize = (baseSizes.h3 * scaleFactor) + 'px'; });
+        document.querySelectorAll('p').forEach(el => { el.style.fontSize = (baseSizes.p * scaleFactor) + 'px'; });
+        document.querySelectorAll('li').forEach(el => { el.style.fontSize = (baseSizes.li * scaleFactor) + 'px'; });
+    }
+    function increaseFontSize() { scaleFactor = Math.min(scaleFactor + 0.1, 1.3); applyFontSizes(); localStorage.setItem('fontScaleFactor', scaleFactor); }
+    function decreaseFontSize() { scaleFactor = Math.max(scaleFactor - 0.1, 0.8); applyFontSizes(); localStorage.setItem('fontScaleFactor', scaleFactor); }
+    function normalFontSize() { scaleFactor = 1; applyFontSizes(); localStorage.setItem('fontScaleFactor', scaleFactor); }
+    function loadPreference() { const saved = localStorage.getItem('fontScaleFactor'); if (saved) { scaleFactor = parseFloat(saved); applyFontSizes(); } }
+    window.addEventListener('load', loadPreference);
+    function toggleMenu() { document.getElementById('menu').classList.toggle('show'); }
+    document.querySelectorAll('nav a').forEach(link => link.addEventListener('click', () => document.getElementById('menu').classList.remove('show')));
+  </script>
+</body>
+</html>
