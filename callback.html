@@ -2,15 +2,43 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Redirigint...</title>
+  <title>Verificació completada</title>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script>
+    // Això processa la verificació del correu
     window.netlifyIdentity = window.netlifyIdentity || {};
     window.netlifyIdentity.init = function() {};
-    window.location.href = '/admin/';
+    setTimeout(function() {
+      window.location.href = '/admin/';
+    }, 2000);
   </script>
+  <style>
+    body {
+      background: #FDF6E3;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    .missatge {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .check {
+      font-size: 60px;
+      color: green;
+    }
+  </style>
 </head>
 <body>
+<div class="missatge">
+  <div class="check">✓</div>
+  <h2>Correu verificat!</h2>
   <p>Redirigint al panell d'administració...</p>
+</div>
 </body>
 </html>
