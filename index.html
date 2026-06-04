@@ -4,36 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Fundació L'Espiga</title>
-  <link rel="stylesheet" href="https://pdcc.gdpr.es/pdcc.min.css">
-  <script charset="utf-8" src="https://pdcc.gdpr.es/pdcc.min.js"></script>
-  <script type="text/javascript">
-    PDCookieConsent.config({
-      "brand": {
-        "dev": true,
-        "name": "Ateneu Privacy Consulting",
-        "url": "https://ateneu.eu",
-        "websiteOwner": ""
-      },
-      "showRejectButton": true,
-      "cookiePolicyLink": "https://fundaciolespiga.com/politica-de-cookies/",
-      "hideModalIn": ["https://fundaciolespiga.com/politica-de-cookies/"],
-      "styles": {
-        "primaryButton": {
-          "bgColor": "#EEEEEE",
-          "txtColor": "#333333"
-        },
-        "secondaryButton": {
-          "bgColor": "#EEEEEE",
-          "txtColor": "#333333"
-        },
-        "rejectButton": {
-          "bgColor": "#EEEEEE",
-          "txtColor": "#333333"
-        }
-      }
-    });
-  </script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <style>
     :root {
       --color-principal: #de6225;
@@ -1238,6 +1210,135 @@
   </style>
 </head>
 <body>
+
+<!-- ============================================= -->
+<!-- SISTEMA DE LOGIN AMB NETLIFY IDENTITY - PROCESSAMENT D'INVITACIONS -->
+<!-- ============================================= -->
+<script>
+  (function() {
+    // Inicialitzar Netlify Identity
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.init();
+    }
+    
+    // FUNCIÓ PER PROCESSAR EL TOKEN D'INVITACIÓ DIRECTAMENT A LA MATEIXA PÀGINA
+    function processarInvitacio() {
+      let token = null;
+      
+      // Buscar token a la URL (#invite_token=...)
+      const hashParams = new URLSearchParams(window.location.hash.slice(1));
+      if (hashParams.has('invite_token')) {
+        token = hashParams.get('invite_token');
+      }
+      
+      // Buscar token a la query string (?invite_token=...)
+      const queryParams = new URLSearchParams(window.location.search);
+      if (queryParams.has('invite_token')) {
+        token = queryParams.get('invite_token');
+      }
+      
+      // Si hi ha token, mostrar el formulari per crear compte
+      if (token) {
+        // Netejar la URL perquè quedi neta
+        window.history.replaceState({}, document.title, window.location.pathname);
+        
+        // Amagar el contingut normal de la web
+        const amagarElements = document.querySelectorAll('body > *:not(.invitacio-form-container)');
+        
+        // Crear el formulari d'invitació
+        const formContainer = document.createElement('div');
+        formContainer.className = 'invitacio-form-container';
+        formContainer.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0,0,0,0.9);
+          z-index: 999999;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-family: 'Segoe UI', sans-serif;
+        `;
+        
+        formContainer.innerHTML = `
+          <div style="max-width:450px; width:90%; background:#FDF6E3; padding:40px; border-radius:30px; box-shadow:0 20px 40px rgba(0,0,0,0.3); text-align:center;">
+            <img src="logo espiga.png" alt="Fundació L'Espiga" style="height:60px; margin-bottom:20px;">
+            <h2 style="color:#de6225; margin-bottom:10px;">Benvingut/da!</h2>
+            <p style="margin-bottom:25px; color:#555;">Crea el teu compte per accedir al panell d'administració</p>
+            <form id="signupForm" style="display:flex; flex-direction:column; gap:15px;">
+              <input type="text" id="nom" placeholder="Nom complet" required style="padding:14px; border:1px solid #ddd; border-radius:12px; font-size:16px;">
+              <input type="email" id="email" placeholder="Correu electrònic" required style="padding:14px; border:1px solid #ddd; border-radius:12px; font-size:16px;">
+              <input type="password" id="contrasenya" placeholder="Contrasenya (mínim 6 caràcters)" required style="padding:14px; border:1px solid #ddd; border-radius:12px; font-size:16px;">
+              <button type="submit" style="background:#de6225; color:white; border:none; padding:14px; border-radius:12px; font-size:18px; font-weight:bold; cursor:pointer; margin-top:10px;">Crear compte</button>
+            </form>
+            <div id="errorMsg" style="color:red; margin-top:15px; font-size:14px;"></div>
+          </div>
+        `;
+        
+        document.body.appendChild(formContainer);
+        
+        // Gestionar l'enviament del formulari
+        const form = document.getElementById('signupForm');
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const nom = document.getElementById('nom').value;
+          const email = document.getElementById('email').value;
+          const contrasenya = document.getElementById('contrasenya').value;
+          const errorDiv = document.getElementById('errorMsg');
+          
+          if (contrasenya.length < 6) {
+            errorDiv.textContent = 'La contrasenya ha de tenir almenys 6 caràcters';
+            return;
+          }
+          
+          try {
+            const resposta = await fetch('/.netlify/identity/signup', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ 
+                email: email, 
+                password: contrasenya,
+                data: { full_name: nom }
+              })
+            });
+            
+            if (resposta.ok) {
+              formContainer.innerHTML = `
+                <div style="max-width:450px; width:90%; background:#FDF6E3; padding:40px; border-radius:30px; text-align:center;">
+                  <div style="font-size:60px;">✅</div>
+                  <h2 style="color:green;">Compte creat!</h2>
+                  <p style="margin:20px 0;">Ja pots iniciar sessió al panell d'administració.</p>
+                  <button onclick="window.location.href='/admin/'" style="background:#de6225; color:white; border:none; padding:12px 30px; border-radius:30px; font-size:16px; cursor:pointer;">Anar al panell</button>
+                </div>
+              `;
+            } else {
+              const error = await resposta.json();
+              errorDiv.textContent = error.msg || 'Error en crear el compte';
+            }
+          } catch(err) {
+            errorDiv.textContent = 'Error de connexió. Prova de nou.';
+          }
+        });
+      }
+    }
+    
+    // Executar en carregar la pàgina
+    processarInvitacio();
+    
+    // Quan l'usuari fa login, redirigir al panell
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on('login', function(user) {
+        window.location.href = '/admin/';
+      });
+    }
+  })();
+</script>
+<!-- ============================================= -->
+<!-- FI DEL SISTEMA D'INVITACIÓ -->
+<!-- ============================================= -->
+
   <div class="progres-desplacament"></div>
   <button class="desplacar-a-dalt" onclick="desplacarADalt()">
     <i class="fas fa-arrow-up"></i>
@@ -1444,13 +1545,12 @@
         </div>
       </div>
     </div>
-
+    
     <div class="peu-pagina-inferior-espiga animacio-desplacament">
       <p> La teva col·laboració és clau per continuar avançant | <a href="col·labora.html">Col·labora amb l'Espiga</a></p>
       <p>© 2026 Fundació l'Espiga | <a href="avislegal.html">Avís legal</a> | <a href="política-de-privacitat.html"> Política de Privacitat</a> | <a href="#" class="pdcc-open-modal"> Panell Cookies</a></p>
     </div>
   </footer>
-
   <script>
 
         const baseSizes = {
@@ -1664,6 +1764,45 @@
         menu.classList.remove('show');
       });
     });
-  </script>
+</script>
+
+<div id="miBannerCookies" style="position:fixed; bottom:0; left:0; right:0; background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%); color:white; padding:20px; text-align:center; z-index:999999; font-family:'Segoe UI', sans-serif; border-top:4px solid #de6225; box-shadow:0 -5px 20px rgba(0,0,0,0.5); backdrop-filter: blur(2px);">
+  <p style="margin-bottom:15px; font-size:15px; font-weight:500;">🍪 Utilitzem cookies pròpies i de tercers per millorar la teva experiència i analitzar el trànsit.</p>
+  
+  <button id="btnAceptarCookies" style="background: linear-gradient(135deg, #de6225 0%, #c55520 100%); color:white; border:none; padding:10px 28px; margin:0 10px; border-radius:40px; cursor:pointer; font-size:14px; font-weight:bold; transition: all 0.3s ease; box-shadow:0 2px 8px rgba(222,98,37,0.3);">
+    ✅ Acceptar
+  </button>
+  
+  <button id="btnRechazarCookies" style="background:#444; color:#eee; border:1px solid #de6225; padding:10px 28px; margin:0 10px; border-radius:40px; cursor:pointer; font-size:14px; font-weight:500; transition: all 0.3s ease;">
+    ❌ Rebutjar
+  </button>
+  <a href="politica-de-cookies.html" target="_blank" style="color:#f5a573; margin-left:15px; text-decoration:none;">📄 Política de cookies</a>
+</div>
+
+
+<script>
+(function() {
+  // Comprobar si ya se eligió antes
+  var consentimiento = localStorage.getItem('cookies_consentido');
+  
+  if (consentimiento === 'aceptado' || consentimiento === 'rechazado') {
+    document.getElementById('miBannerCookies').style.display = 'none';
+    console.log('Cookies ya ' + consentimiento);
+  } else {
+    // Mostrar banner (ya está visible por defecto)
+    document.getElementById('btnAceptarCookies').onclick = function() {
+      localStorage.setItem('cookies_consentido', 'aceptado');
+      document.getElementById('miBannerCookies').style.display = 'none';
+      console.log('✅ Cookies aceptadas');
+    };
+    
+    document.getElementById('btnRechazarCookies').onclick = function() {
+      localStorage.setItem('cookies_consentido', 'rechazado');
+      document.getElementById('miBannerCookies').style.display = 'none';
+      console.log('❌ Cookies rechazadas');
+    };
+  }
+})();
+</script>
 </body>
 </html>
