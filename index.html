@@ -1221,31 +1221,109 @@
       window.netlifyIdentity.init();
     }
     
-    // FUNCIÓ PER PROCESSAR EL TOKEN D'INVITACIÓ DIRECTAMENT A LA MATEIXA PÀGINA
+    // FUNCIÓ PER PROCESSAR EL TOKEN D'INVITACIÓ
     function processarInvitacio() {
       let token = null;
+      let confirmationToken = null;
       
-      // Buscar token a la URL (#invite_token=...)
+      // Buscar token d'invitació a la URL (#invite_token=...)
       const hashParams = new URLSearchParams(window.location.hash.slice(1));
       if (hashParams.has('invite_token')) {
         token = hashParams.get('invite_token');
       }
       
-      // Buscar token a la query string (?invite_token=...)
+      // Buscar token de confirmació (#confirmation_token=...)
+      if (hashParams.has('confirmation_token')) {
+        confirmationToken = hashParams.get('confirmation_token');
+      }
+      
+      // Buscar a la query string també
       const queryParams = new URLSearchParams(window.location.search);
       if (queryParams.has('invite_token')) {
         token = queryParams.get('invite_token');
       }
+      if (queryParams.has('confirmation_token')) {
+        confirmationToken = queryParams.get('confirmation_token');
+      }
       
-      // Si hi ha token, mostrar el formulari per crear compte
-      if (token) {
-        // Netejar la URL perquè quedi neta
+      // ========================================
+      // CAS 1: Token de CONFIRMACIÓ de correu
+      // ========================================
+      if (confirmationToken) {
         window.history.replaceState({}, document.title, window.location.pathname);
         
-        // Amagar el contingut normal de la web
-        const amagarElements = document.querySelectorAll('body > *:not(.invitacio-form-container)');
+        const formContainer = document.createElement('div');
+        formContainer.className = 'invitacio-form-container';
+        formContainer.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0,0,0,0.9);
+          z-index: 999999;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-family: 'Segoe UI', sans-serif;
+        `;
         
-        // Crear el formulari d'invitació
+        formContainer.innerHTML = `
+          <div style="max-width:450px; width:90%; background:#FDF6E3; padding:40px; border-radius:30px; text-align:center;">
+            <div style="font-size:60px;">✉️</div>
+            <h2 style="color:#de6225; margin-bottom:10px;">Confirmant el teu correu...</h2>
+            <div class="spinner" style="margin:20px auto; width:40px; height:40px; border:4px solid #ddd; border-top-color:#de6225; border-radius:50%; animation:spin 1s linear infinite;"></div>
+            <p style="color:#555;">Si us plau, espera un moment</p>
+          </div>
+          <style>
+            @keyframes spin {
+              to { transform: rotate(360deg); }
+            }
+          </style>
+        `;
+        
+        document.body.appendChild(formContainer);
+        
+        // Confirmar el correu amb el token
+        fetch('/.netlify/identity/confirm', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: confirmationToken })
+        })
+        .then(response => {
+          if (response.ok) {
+            formContainer.innerHTML = `
+              <div style="max-width:450px; width:90%; background:#FDF6E3; padding:40px; border-radius:30px; text-align:center;">
+                <div style="font-size:60px;">✅</div>
+                <h2 style="color:green;">Correu confirmat!</h2>
+                <p style="margin:20px 0;">El teu compte ja està actiu. Ja pots iniciar sessió al panell d'administració.</p>
+                <button onclick="window.location.href='/admin/'" style="background:#de6225; color:white; border:none; padding:12px 30px; border-radius:30px; font-size:16px; cursor:pointer;">Anar al panell</button>
+              </div>
+            `;
+          } else {
+            throw new Error('Error en confirmar');
+          }
+        })
+        .catch(error => {
+          formContainer.innerHTML = `
+            <div style="max-width:450px; width:90%; background:#FDF6E3; padding:40px; border-radius:30px; text-align:center;">
+              <div style="font-size:60px;">❌</div>
+              <h2 style="color:red;">Error</h2>
+              <p>No s'ha pogut confirmar el correu. Prova de nou o contacta amb l'administrador.</p>
+              <button onclick="window.location.href='/'" style="background:#de6225; color:white; border:none; padding:12px 30px; border-radius:30px; font-size:16px; cursor:pointer;">Tornar a l'inici</button>
+            </div>
+          `;
+        });
+        
+        return;
+      }
+      
+      // ========================================
+      // CAS 2: Token d'INVITACIÓ (crear compte)
+      // ========================================
+      if (token) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+        
         const formContainer = document.createElement('div');
         formContainer.className = 'invitacio-form-container';
         formContainer.style.cssText = `
@@ -1279,7 +1357,6 @@
         
         document.body.appendChild(formContainer);
         
-        // Gestionar l'enviament del formulari
         const form = document.getElementById('signupForm');
         form.addEventListener('submit', async (e) => {
           e.preventDefault();
@@ -1307,10 +1384,11 @@
             if (resposta.ok) {
               formContainer.innerHTML = `
                 <div style="max-width:450px; width:90%; background:#FDF6E3; padding:40px; border-radius:30px; text-align:center;">
-                  <div style="font-size:60px;">✅</div>
-                  <h2 style="color:green;">Compte creat!</h2>
-                  <p style="margin:20px 0;">Ja pots iniciar sessió al panell d'administració.</p>
-                  <button onclick="window.location.href='/admin/'" style="background:#de6225; color:white; border:none; padding:12px 30px; border-radius:30px; font-size:16px; cursor:pointer;">Anar al panell</button>
+                  <div style="font-size:60px;">📧</div>
+                  <h2 style="color:#de6225;">Compte creat!</h2>
+                  <p style="margin:20px 0;">T'enviarem un correu per confirmar la teva adreça electrònica.</p>
+                  <p style="font-size:14px; color:#666;">Revisa la teva safata d'entrada (i la carpeta de correu no desitjat).</p>
+                  <button onclick="window.location.href='/'" style="background:#de6225; color:white; border:none; padding:12px 30px; border-radius:30px; font-size:16px; cursor:pointer; margin-top:10px;">Tornar a l'inici</button>
                 </div>
               `;
             } else {
