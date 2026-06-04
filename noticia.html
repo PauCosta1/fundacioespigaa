@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notícia - Fundació L'Espiga</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    /* Copia aquí tots els estils del noticies.html (els mateixos) */
+    :root {
+        --color-principal: #de6225;
+        --color-secundari: #FDF6E3;
+        --color-destacat: #c55520;
+        --tipografia-principal: 'Segoe UI', sans-serif;
+        --textura-fons: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: var(--tipografia-principal);
+        background-color: var(--color-secundari);
+        background-image: var(--textura-fons);
+        background-blend-mode: multiply;
+        line-height: 1.6;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    /* Afegeix aquí la resta d'estils del noticies.html (header, footer, etc.) */
+    .noticia-individual {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .noticia-individual img {
+        max-width: 100%;
+        border-radius: 12px;
+        margin: 1rem 0;
+    }
+    .noticia-individual h1 {
+        color: var(--color-principal);
+        margin-bottom: 1rem;
+    }
+    .noticia-data {
+        color: #666;
+        margin-bottom: 1rem;
+    }
+    .tornar {
+        display: inline-block;
+        margin-top: 2rem;
+        color: var(--color-principal);
+        text-decoration: none;
+    }
+    .contingut {
+        line-height: 1.8;
+    }
+    .contingut p {
+        margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Afegeix aquí el header i barra de contacte igual que a noticies.html -->
+  
+  <main>
+    <div id="contingut-noticia" class="noticia-individual">
+      <div style="text-align:center; padding:3rem;">Carregant...</div>
+    </div>
+  </main>
+  
+  <!-- Afegeix aquí el footer igual que a noticies.html -->
+
+  <script>
+    async function carregarNoticia() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get('id');
+      
+      if (!id) {
+        document.getElementById('contingut-noticia').innerHTML = '<div class="noticia-individual"><h1>Notícia no trobada</h1><a href="noticies.html" class="tornar">← Tornar a notícies</a></div>';
+        return;
+      }
+      
+      try {
+        const resposta = await fetch(`/contingut/noticies/${id}.md`);
+        if (!resposta.ok) throw new Error('Notícia no trobada');
+        
+        const markdown = await resposta.text();
+        const match = markdown.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+        
+        if (match) {
+          const frontmatter = match[1];
+          const contingut = match[2];
+          
+          const titolMatch = frontmatter.match(/titol:\s*["']?(.*?)["']?$/m);
+          const dataMatch = frontmatter.match(/data:\s*["']?(.*?)["']?$/m);
+          const imatgeMatch = frontmatter.match(/imatge:\s*["']?(.*?)["']?$/m);
+          
+          const titol = titolMatch ? titolMatch[1].replace(/^["']|["']$/g, '') : 'Sense títol';
+          const data = dataMatch ? new Date(dataMatch[1]) : new Date();
+          const imatge = imatgeMatch ? imatgeMatch[1].replace(/^["']|["']$/g, '') : null;
+          
+          const htmlContingut = marked.parse(contingut);
+          
+          document.getElementById('contingut-noticia').innerHTML = `
+            <div class="noticia-individual">
+              <a href="noticies.html" class="tornar">← Tornar a notícies</a>
+              <h1>${titol}</h1>
+              <div class="noticia-data"><i class="fas fa-calendar-alt"></i> ${data.toLocaleDateString('ca-ES')}</div>
+              ${imatge ? `<img src="${imatge}" alt="${titol}">` : ''}
+              <div class="contingut">${htmlContingut}</div>
+              <a href="noticies.html" class="tornar">← Tornar a notícies</a>
+            </div>
+          `;
+        }
+      } catch(error) {
+        document.getElementById('contingut-noticia').innerHTML = '<div class="noticia-individual"><h1>Notícia no trobada</h1><a href="noticies.html" class="tornar">← Tornar a notícies</a></div>';
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', carregarNoticia);
+  </script>
+</body>
+</html>
