@@ -1,17 +1,36 @@
 backend:
   name: git-gateway
   branch: main
-media_folder: "assets/img/noticias"
-public_folder: "/assets/img/noticias"
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
 collections:
-  - name: "noticias"
-    label: "Noticias"
-    folder: "data/noticias"
+  - name: "noticies"
+    label: "📰 Notícies"
+    folder: "contingut/noticies"
     create: true
-    delete: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
-      - {label: "Título", name: "title", widget: "string"}
-      - {label: "Fecha", name: "date", widget: "datetime"}
-      - {label: "Imagen", name: "image", widget: "image"}
-      - {label: "Contenido", name: "body", widget: "markdown"}
+      - {label: "Títol", name: "titol", widget: "string"}
+      - {label: "Data", name: "data", widget: "datetime"}
+      - {label: "Imatge", name: "imatge", widget: "image"}
+      - {label: "Contingut", name: "cos", widget: "markdown"}
+
+  - name: "textos"
+    label: "✏️ Textos de la web"
+    files:
+      - name: "inici"
+        label: "Pàgina d'inici"
+        file: "contingut/inici.md"
+        fields:
+          - {label: "Títol de benvinguda", name: "titol", widget: "string"}
+          - {label: "Text", name: "text", widget: "text"}
+
+  - name: "galeria"
+    label: "🖼️ Galeria de fotos"
+    folder: "images/galeria"
+    create: true
+    fields:
+      - {label: "Títol", name: "titol", widget: "string"}
+      - {label: "Foto", name: "foto", widget: "image"}
