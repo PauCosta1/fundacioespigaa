@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmació - Fundació L'Espiga</title>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #FDF6E3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 500px;
+    }
+    h1 {
+      color: #de6225;
+      margin-bottom: 20px;
+    }
+    .loading {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #de6225;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .success {
+      color: green;
+      margin: 20px 0;
+    }
+    .error {
+      color: red;
+      margin: 20px 0;
+    }
+    button {
+      background: #de6225;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    button:hover {
+      background: #c55520;
+    }
+  </style>
+</head>
+<body>
+<div class="container" id="app">
+  <h1>Fundació L'Espiga</h1>
+  <div id="content">
+    <div class="loading"></div>
+    <p>Processant la teva invitació...</p>
+  </div>
+</div>
+
+<script>
+  window.netlifyIdentity = window.netlifyIdentity || {};
+  window.netlifyIdentity.init = function() {};
+
+  (function() {
+    const params = new URLSearchParams(window.location.hash.slice(1));
+    const token = params.get('invite_token');
+    
+    const contentDiv = document.getElementById('content');
+    
+    if (token) {
+      fetch('/.netlify/identity/accept', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: token })
+      })
+      .then(response => {
+        if (response.ok) {
+          contentDiv.innerHTML = `
+            <div class="success">✅</div>
+            <h2>Invitació acceptada!</h2>
+            <p>Ja pots crear la teva contrasenya.</p>
+            <button onclick="crearContrasenya()">Crear contrasenya</button>
+          `;
+        } else {
+          throw new Error('Error en acceptar la invitació');
+        }
+      })
+      .catch(error => {
+        contentDiv.innerHTML = `
+          <div class="error">❌</div>
+          <h2>Error</h2>
+          <p>No s'ha pogut processar la invitació.</p>
+          <p>Si us plau, demana un nou enllaç.</p>
+        `;
+      });
+    } else {
+      // Si ja tenim el token, gestionem la creació de contrasenya
+      if (window.location.search.includes('invite')) {
+        contentDiv.innerHTML = `
+          <div class="loading"></div>
+          <p>Redirigint...</p>
+        `;
+        window.location.href = '/admin/';
+      }
+    }
+    
+    window.crearContrasenya = function() {
+      window.location.href = '/admin/';
+    };
+  })();
+</script>
+</body>
+</html>
