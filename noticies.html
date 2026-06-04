@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Notícies - Fundació L'Espiga</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     :root {
         --color-principal: #de6225;
@@ -243,12 +244,6 @@
         border-radius: 10px;
     }
 
-    .logo-espiga img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-    }
-
     .menu-toggle {
         display: none;
         background: none;
@@ -265,10 +260,6 @@
 
     .menu-toggle:hover {
         background: rgba(255, 255, 255, 0.1);
-    }
-
-    .menu-toggle:active {
-        transform: scale(0.95);
     }
 
     nav {
@@ -339,25 +330,97 @@
         box-shadow: 0 6px 16px rgba(222, 98, 37, 0.4);
     }
 
-    .desplacar-a-dalt:active {
-        transform: scale(0.95);
-    }
-
-    /* Estilos específicos de noticies.html */
-    main h1 {
-        color: var(--color-principal);
-        font-size: clamp(2rem, 6vw, 2.5rem);
+    /* Estilos de les notícies */
+    .titol-pagina {
         text-align: center;
-        margin: 2rem 0;
+        font-size: clamp(2rem, 6vw, 2.5rem);
+        color: var(--color-principal);
+        margin-bottom: 0.5rem;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    main p {
+    .subtitol-pagina {
+        text-align: center;
         color: var(--color-destacat);
         font-size: clamp(1rem, 4vw, 1.2rem);
+        margin-bottom: 3rem;
+    }
+
+    .noticies-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .noticia-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .noticia-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .noticia-imatge {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .noticia-contingut {
+        padding: 1.5rem;
+    }
+
+    .noticia-data {
+        color: var(--color-principal);
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    .noticia-titol {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        color: #333;
+        line-height: 1.3;
+    }
+
+    .noticia-resum {
+        color: #666;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+    }
+
+    .noticia-link {
+        color: var(--color-principal);
+        text-decoration: none;
+        font-weight: bold;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: gap 0.3s;
+    }
+
+    .noticia-link:hover {
+        gap: 10px;
+    }
+
+    .loading, .no-noticies {
         text-align: center;
-        max-width: 600px;
-        margin: 0 auto;
+        padding: 3rem;
+        font-size: 1.2rem;
+        color: #666;
+        grid-column: 1 / -1;
+    }
+
+    .loading {
+        color: var(--color-principal);
     }
 
     .animacio-escalonada {
@@ -519,74 +582,7 @@
         text-underline-offset: 4px;
     }
 
-    /* Media Queries - Barra de contacto */
-    @media (max-width: 768px) {
-        .barra-contacte {
-            padding: 6px 0;
-        }
-        .contingut-barra-contacte {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 0 10px;
-            gap: 5px;
-        }
-        .informacio-contacte {
-            display: flex;
-            flex-direction: row;
-            gap: 8px;
-            flex: 1;
-            justify-content: flex-start;
-        }
-        .element-contacte {
-            padding: 4px 6px;
-            min-height: 36px;
-        }
-        .element-contacte i {
-            font-size: 0.9rem;
-        }
-        .element-contacte a {
-            font-size: 0.8rem;
-        }
-        .enllacos-socials {
-            gap: 6px;
-            flex-shrink: 0;
-        }
-        .enllac-social {
-            width: 32px;
-            height: 32px;
-            font-size: 0.9rem;
-        }
-    }
-
-    @media (max-width: 600px) {
-        .contingut-barra-contacte { padding: 0 8px; }
-        .informacio-contacte { gap: 5px; }
-        .element-contacte { padding: 4px 5px; }
-        .element-contacte i { font-size: 0.85rem; min-width: 18px; }
-        .element-contacte a { font-size: 0.75rem; }
-        .enllac-social { width: 30px; height: 30px; font-size: 0.85rem; }
-    }
-
-    @media (max-width: 480px) {
-        .contingut-barra-contacte { padding: 0 5px; gap: 3px; }
-        .informacio-contacte { gap: 3px; justify-content: space-around; }
-        .element-contacte { padding: 3px 4px; gap: 3px; }
-        .element-contacte i { font-size: 0.8rem; min-width: 16px; }
-        .element-contacte a { font-size: 0.7rem; }
-        .enllacos-socials { gap: 4px; }
-        .enllac-social { width: 28px; height: 28px; font-size: 0.8rem; }
-    }
-
-    /* Media Queries - Contenido específico */
-    @media (max-width: 1024px) {
-        main h1 {
-            font-size: 2.2rem;
-        }
-    }
-
+    /* Media Queries */
     @media (max-width: 768px) {
         .menu-toggle { display: block; }
         nav { width: 100%; order: 3; }
@@ -598,55 +594,26 @@
             border-radius: 12px;
             margin-top: 1rem;
             padding: 0.5rem 0;
-            position: relative;
-            z-index: 999;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.1);
         }
         nav ul.show { display: flex !important; }
         nav li { width: 100%; text-align: center; }
-        nav a {
-            justify-content: center;
-            padding: 1rem;
-            border-radius: 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        nav li:last-child a { border-bottom: none; }
-        nav a:hover { transform: none; background: rgba(255, 255, 255, 0.2); }
-
-        main {
-            padding: 1rem;
-        }
-
-        main h1 {
-            font-size: 2rem;
-            margin: 1rem 0;
-        }
-
+        nav a { justify-content: center; padding: 1rem; }
+        
+        main { padding: 1rem; }
+        .noticies-grid { grid-template-columns: 1fr; }
         .contenidor-peu-pagina-espiga { flex-direction: column; }
-        .bloc-peu-pagina-espiga {
-            width: 100%;
-            text-align: center;
-            min-width: 100%;
-        }
+        .bloc-peu-pagina-espiga { text-align: center; min-width: 100%; }
         .bloc-peu-pagina-espiga h3 { justify-content: center; }
         .bloc-peu-pagina-espiga h3::after { left: 50%; transform: translateX(-50%); }
         .bloc-peu-pagina-espiga ul li { text-align: center; }
-        .bloc-peu-pagina-espiga ul li:hover { transform: none; }
         .bloc-peu-pagina-espiga a { justify-content: center; }
-        .bloc-peu-pagina-espiga a:hover { padding-left: 0; }
         .controls-text-espiga { justify-content: center; }
-        .peu-pagina-inferior-espiga { display: flex; flex-direction: column; gap: 10px; }
     }
 
     @media (max-width: 480px) {
-        main h1 {
-            font-size: 1.8rem;
-            margin: 0.5rem 0;
-        }
-        main p {
-            font-size: 0.9rem;
-        }
+        .noticies-grid { gap: 1rem; }
+        .noticia-contingut { padding: 1rem; }
+        .noticia-titol { font-size: 1.1rem; }
     }
 </style>
 </head>
@@ -691,11 +658,11 @@
         <i class="fas fa-bars"></i>
       </button>
       
-       <nav class="apartats">
+      <nav class="apartats">
         <ul id="menu">
           <li class="inici"><a href="index.html">Inici</a></li>
           <li class="presentacio"><a href="presentacio.html">Presentació</a></li>
-           <li class="serveis"><a href="serveis.html">Serveis</a></li>
+          <li class="serveis"><a href="serveis.html">Serveis</a></li>
           <li class="noticies"><a href="noticies.html">Notícies</a></li>
           <li class="col·labora"><a href="col·labora.html">Col·labora</a></li>
           <li class="transparencia"><a href="transparencia.html">Transparència</a></li>
@@ -707,8 +674,12 @@
 
   <main>
     <div class="animacio-desplacament">
-      <h1>Notícies</h1>
-      <p>Aquí podràs trobar totes les notícies i actualitzacions de la Fundació L'Espiga.</p>
+      <h1 class="titol-pagina">Notícies</h1>
+      <p class="subtitol-pagina">Actualitat i novetats de la Fundació L'Espiga</p>
+    </div>
+    
+    <div id="llista-noticies" class="noticies-grid animacio-desplacament">
+      <div class="loading">Carregant notícies...</div>
     </div>
   </main>
 
@@ -721,7 +692,7 @@
         <p><i class="fas fa-envelope"></i> <a href="mailto:espiga@fundaciolespiga.cat">espiga@fundaciolespiga.cat</a></p>
       </div>
 
-  <div class="bloc-peu-pagina-espiga animacio-desplacament animacio-escalonada">
+      <div class="bloc-peu-pagina-espiga animacio-desplacament animacio-escalonada">
         <h3><i class="fas fa-concierge-bell"></i> Serveis</h3>
         <ul>
           <li><i class="fas fa-child"></i> <a href="CDIAPs.html">CDIAPs</a></li>
@@ -743,107 +714,74 @@
       </div>
     </div>
 
-   <div class="peu-pagina-inferior-espiga animacio-desplacament">
-      <p> La teva col·laboració és clau per continuar avançant | <a href="col·labora.html">Col·labora amb l'Espiga</a></p>
-      <p>© 2026 Fundació l'Espiga | <a href="avislegal.html">Avís legal</a> | <a href="política-de-privacitat.html"> Política de Privacitat</a></p>
+    <div class="peu-pagina-inferior-espiga animacio-desplacament">
+      <p>La teva col·laboració és clau per continuar avançant | <a href="col·labora.html">Col·labora amb l'Espiga</a></p>
+      <p>© 2026 Fundació l'Espiga | <a href="avislegal.html">Avís legal</a> | <a href="política-de-privacitat.html">Política de Privacitat</a></p>
     </div>
   </footer>
 
   <script>
-
-      const baseSizes = {
-  body: 16,
-  h1: 32,
-  h2: 38,
-  h3: 20,
-  p: 16,
-  li: 16
-  };
-        
-  let scaleFactor = 1;
-        
-  function increaseFontSize() {
-    scaleFactor = Math.min(scaleFactor + 0.1, 1.3); 
-    applyFontSizes();
-  }
-        
-  function decreaseFontSize() {
-    scaleFactor = Math.max(scaleFactor - 0.1, 0.8); 
-    applyFontSizes();
-  }
-        
-  function normalFontSize() {
-    scaleFactor = 1;
-    applyFontSizes();
-  }
-        
-  function applyFontSizes() {
-    document.body.style.fontSize = (baseSizes.body * scaleFactor) + 'px';
-
-    const h1Elements = document.querySelectorAll('h1');
-    h1Elements.forEach(el => {
-      el.style.fontSize = (baseSizes.h1 * scaleFactor) + 'px';
-    });
-            
-    const h2Elements = document.querySelectorAll('h2');
-    h2Elements.forEach(el => {
-      el.style.fontSize = (baseSizes.h2 * scaleFactor) + 'px';
-    });        
-            
-    const h3Elements = document.querySelectorAll('h3');
-    h3Elements.forEach(el => {
-      el.style.fontSize = (baseSizes.h3 * scaleFactor) + 'px';
-    });
-            
-    const pElements = document.querySelectorAll('p');
-    pElements.forEach(el => {
-      el.style.fontSize = (baseSizes.p * scaleFactor) + 'px';
-    });
-            
-   const liElements = document.querySelectorAll('li');
-   liElements.forEach(el => {
-    el.style.fontSize = (baseSizes.li * scaleFactor) + 'px';
-   });
-   }
-
-  function savePreference() {
-    localStorage.setItem('fontScaleFactor', scaleFactor);
-  }
-        
-  function loadPreference() {
-    const saved = localStorage.getItem('fontScaleFactor');
-    if (saved) {
-      scaleFactor = parseFloat(saved);
+    // Variables per la mida del text
+    const baseSizes = {
+      body: 16,
+      h1: 32,
+      h2: 38,
+      h3: 20,
+      p: 16,
+      li: 16
+    };
+    
+    let scaleFactor = 1;
+    
+    function increaseFontSize() {
+      scaleFactor = Math.min(scaleFactor + 0.1, 1.3); 
       applyFontSizes();
     }
+    
+    function decreaseFontSize() {
+      scaleFactor = Math.max(scaleFactor - 0.1, 0.8); 
+      applyFontSizes();
     }
-        
-    const originalIncrease = increaseFontSize;
-    const originalDecrease = decreaseFontSize;
-    const originalNormal = normalFontSize;
-        
-    increaseFontSize = function() {
-    originalIncrease();
-    savePreference();
-    };
-        
-    decreaseFontSize = function() {
-    originalDecrease();
-    savePreference();
-    };
-        
-    normalFontSize = function() {
-    originalNormal();
-    savePreference();
-    };
-        
+    
+    function normalFontSize() {
+      scaleFactor = 1;
+      applyFontSizes();
+    }
+    
+    function applyFontSizes() {
+      document.body.style.fontSize = (baseSizes.body * scaleFactor) + 'px';
+      document.querySelectorAll('h1').forEach(el => el.style.fontSize = (baseSizes.h1 * scaleFactor) + 'px');
+      document.querySelectorAll('h2').forEach(el => el.style.fontSize = (baseSizes.h2 * scaleFactor) + 'px');
+      document.querySelectorAll('h3').forEach(el => el.style.fontSize = (baseSizes.h3 * scaleFactor) + 'px');
+      document.querySelectorAll('p').forEach(el => el.style.fontSize = (baseSizes.p * scaleFactor) + 'px');
+      document.querySelectorAll('li').forEach(el => el.style.fontSize = (baseSizes.li * scaleFactor) + 'px');
+    }
+    
+    function savePreference() {
+      localStorage.setItem('fontScaleFactor', scaleFactor);
+    }
+    
+    function loadPreference() {
+      const saved = localStorage.getItem('fontScaleFactor');
+      if (saved) {
+        scaleFactor = parseFloat(saved);
+        applyFontSizes();
+      }
+    }
+    
+    // Funcions globals per als botons
+    window.increaseFontSize = increaseFontSize;
+    window.decreaseFontSize = decreaseFontSize;
+    window.normalFontSize = normalFontSize;
+    
     window.addEventListener('load', loadPreference);
     
+    // Animacions
     const opcionsObservador = {
       threshold: 0.1,
       rootMargin: '0px 0px -50px 0px'
     };
-
+    
     const observador = new IntersectionObserver((entrades) => {
       entrades.forEach(entrada => {
         if (entrada.isIntersecting) {
@@ -851,84 +789,150 @@
         }
       });
     }, opcionsObservador);
-
+    
     document.querySelectorAll('.animacio-desplacament, .animacio-desplacament-esquerra, .animacio-desplacament-dreta, .animacio-desplacament-escala').forEach(el => {
       observador.observe(el);
     });
-
+    
+    // Scroll
     function actualitzarProgresDesplacament() {
       const desplacamentSuperior = window.pageYOffset;
       const alturaDocument = document.body.scrollHeight - window.innerHeight;
       const percentatgeDesplacament = (desplacamentSuperior / alturaDocument) * 100;
-      document.querySelector('.progres-desplacament').style.width = percentatgeDesplacament + '%';
+      const progres = document.querySelector('.progres-desplacament');
+      if (progres) progres.style.width = percentatgeDesplacament + '%';
     }
-
-    function actualitzarParallax() {
-      const desplacat = window.pageYOffset;
-      const elementsParallax = document.querySelectorAll('.element-parallax');
-      
-      elementsParallax.forEach(element => {
-        const velocitat = 0.5;
-        const posicioY = -(desplacat * velocitat);
-        element.style.transform = `translateY(${posicioY}px)`;
-      });
-    }
-
+    
     function alternarDesplacarADalt() {
-      const botoDesplacarADalt = document.querySelector('.desplacar-a-dalt');
-      if (window.pageYOffset > 300) {
-        botoDesplacarADalt.classList.add('visible');
-      } else {
-        botoDesplacarADalt.classList.remove('visible');
+      const boto = document.querySelector('.desplacar-a-dalt');
+      if (boto) {
+        if (window.pageYOffset > 300) {
+          boto.classList.add('visible');
+        } else {
+          boto.classList.remove('visible');
+        }
       }
     }
-
-    function desplacarADalt() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    }
-
+    
+    window.desplacarADalt = function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    
     window.addEventListener('scroll', () => {
       actualitzarProgresDesplacament();
-      actualitzarParallax();
       alternarDesplacarADalt();
     });
-
-    document.querySelectorAll('a[href^="#"]').forEach(ancora => {
-      ancora.addEventListener('click', function (e) {
-        e.preventDefault();
-        const objectiu = document.querySelector(this.getAttribute('href'));
-        if (objectiu) {
-          objectiu.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
-    });
-
-    window.addEventListener('load', () => {
-      document.querySelectorAll('.animacio-desplacament, .animacio-desplacament-esquerra, .animacio-desplacament-dreta, .animacio-desplacament-escala').forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-          el.classList.add('animar');
-        }
-      });
-    });
-
+    
     function toggleMenu() {
       const menu = document.getElementById('menu');
-      menu.classList.toggle('show');
+      if (menu) menu.classList.toggle('show');
     }
-
+    window.toggleMenu = toggleMenu;
+    
     document.querySelectorAll('nav a').forEach(link => {
       link.addEventListener('click', () => {
         const menu = document.getElementById('menu');
-        menu.classList.remove('show');
+        if (menu) menu.classList.remove('show');
       });
     });
+    
+    // ============================================
+    // FUNCIÓ PER CARRREGAR LES NOTÍCIES DES DEL CMS
+    // ============================================
+    async function carregarNoticies() {
+      const container = document.getElementById('llista-noticies');
+      if (!container) return;
+      
+      try {
+        // Intentem obtenir la llista de notícies
+        const resposta = await fetch('/contingut/noticies/');
+        
+        if (!resposta.ok) {
+          container.innerHTML = '<div class="no-noticies">No hi ha notícies disponibles. La directora pot crear-ne des del panell d\'administració.</div>';
+          return;
+        }
+        
+        const text = await resposta.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, 'text/html');
+        const enllacos = doc.querySelectorAll('a');
+        
+        const arxius = [];
+        for (let enllac of enllacos) {
+          const href = enllac.getAttribute('href');
+          if (href && href.endsWith('.md') && href !== 'index.md') {
+            arxius.push(href);
+          }
+        }
+        
+        if (arxius.length === 0) {
+          container.innerHTML = '<div class="no-noticies">No hi ha notícies publicades encara.</div>';
+          return;
+        }
+        
+        // Ordenar per data (més recent primer)
+        arxius.sort().reverse();
+        
+        let noticiesHTML = '';
+        
+        for (let arxiu of arxius) {
+          try {
+            const respostaNoticia = await fetch(`/contingut/noticies/${arxiu}`);
+            const markdown = await respostaNoticia.text();
+            
+            // Processar el frontmatter
+            const match = markdown.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+            if (match) {
+              const frontmatter = match[1];
+              const contingut = match[2];
+              
+              // Extreure dades
+              const titolMatch = frontmatter.match(/titol:\s*["']?(.*?)["']?$/m);
+              const dataMatch = frontmatter.match(/data:\s*["']?(.*?)["']?$/m);
+              const imatgeMatch = frontmatter.match(/imatge:\s*["']?(.*?)["']?$/m);
+              
+              const titol = titolMatch ? titolMatch[1].replace(/^["']|["']$/g, '') : 'Sense títol';
+              const data = dataMatch ? new Date(dataMatch[1]) : new Date();
+              const imatge = imatgeMatch ? imatgeMatch[1].replace(/^["']|["']$/g, '') : null;
+              
+              // Netejar el contingut per fer el resum
+              const textPla = contingut.replace(/[#*`>]/g, '').replace(/\n/g, ' ').substring(0, 200);
+              const resum = textPla + (textPla.length >= 200 ? '...' : '');
+              
+              // Crear slug per la URL
+              const nomArxiu = arxiu.replace('.md', '');
+              
+              noticiesHTML += `
+                <article class="noticia-card" onclick="window.location.href='noticia.html?id=${encodeURIComponent(nomArxiu)}'">
+                  ${imatge ? `<img src="${imatge}" alt="${titol}" class="noticia-imatge" onerror="this.style.display='none'">` : ''}
+                  <div class="noticia-contingut">
+                    <div class="noticia-data"><i class="fas fa-calendar-alt"></i> ${data.toLocaleDateString('ca-ES')}</div>
+                    <h2 class="noticia-titol">${titol}</h2>
+                    <p class="noticia-resum">${resum}</p>
+                    <span class="noticia-link">Llegir més <i class="fas fa-arrow-right"></i></span>
+                  </div>
+                </article>
+              `;
+            }
+          } catch(e) {
+            console.error(`Error carregant ${arxiu}:`, e);
+          }
+        }
+        
+        if (noticiesHTML === '') {
+          container.innerHTML = '<div class="no-noticies">No hi ha notícies publicades encara.</div>';
+        } else {
+          container.innerHTML = noticiesHTML;
+        }
+        
+      } catch(error) {
+        console.error('Error carregant notícies:', error);
+        container.innerHTML = '<div class="no-noticies">No hi ha notícies disponibles. La directora pot crear-ne des del panell d\'administració.</div>';
+      }
+    }
+    
+    // Carregar les notícies
+    document.addEventListener('DOMContentLoaded', carregarNoticies);
   </script>
 </body>
 </html>
