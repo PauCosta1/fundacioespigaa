@@ -5,11 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Panell d'administració · Fundació L'Espiga</title>
   
-  <!-- Font Awesome 6 (icons) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- CSS de Netlify CMS -->
   <link href="https://unpkg.com/netlify-cms@^2.10.0/dist/cms.css" rel="stylesheet" />
   
   <style>
@@ -23,8 +20,7 @@
       --color-principal: #de6225;
       --color-secundari: #FDF6E3;
       --color-destacat: #c55520;
-      --color-text: #000000;
-      --tipografia-principal: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --tipografia-principal: 'Segoe UI', system-ui, sans-serif;
     }
 
     body {
@@ -37,6 +33,7 @@
       padding: 1.5rem;
     }
 
+    /* Pantalla de login */
     .login-container {
       max-width: 460px;
       width: 100%;
@@ -95,6 +92,7 @@
       border-radius: 44px;
       cursor: pointer;
       margin-top: 1rem;
+      transition: all 0.3s ease;
     }
 
     .boto-accedir:hover {
@@ -116,19 +114,20 @@
       text-decoration: none;
     }
 
-    /* Ocultem el CMS fins que l'usuari faci login */
-    .cms-wrapper {
+    /* Ocultar el CMS fins que l'usuari faci login */
+    #cmsContainer {
       display: none;
+      width: 100%;
     }
 
-    .cms-wrapper.visible {
+    #cmsContainer.visible {
       display: block;
     }
   </style>
 </head>
 <body>
 
-<!-- Pantalla de login personalizada -->
+<!-- Pantalla de login -->
 <div id="loginScreen" class="login-container">
   <div class="login-header">
     <img src="/logo espiga.png" alt="Fundació L'Espiga" class="logo-espiga-login" onerror="this.src='https://placehold.co/200x80?text=Fundació+L%27Espiga'">
@@ -151,7 +150,7 @@
   </div>
 </div>
 
-<!-- Aquí se cargará Netlify CMS después del login -->
+<!-- Container pel CMS -->
 <div id="cmsContainer"></div>
 
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
@@ -163,6 +162,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const loginButton = document.getElementById("loginButton");
   const errorDiv = document.getElementById("missatgeError");
   const errorText = document.getElementById("errorText");
+  const cmsContainer = document.getElementById("cmsContainer");
 
   function mostrarError(mensaje) {
     errorText.textContent = mensaje;
@@ -172,51 +172,44 @@ document.addEventListener("DOMContentLoaded", function() {
     }, 3000);
   }
 
-  // Inicializar Netlify Identity
+  // Inicialitzar Netlify Identity
   if (window.netlifyIdentity) {
     window.netlifyIdentity.init();
 
-    // Verificar si ya hay usuario logueado
+    // Comprovar si ja hi ha sessió iniciada
     const user = window.netlifyIdentity.currentUser();
     if (user) {
-      // Si ya está logueado, mostrar el CMS directamente
       loginScreen.style.display = "none";
-      cargarCMS();
+      cmsContainer.style.display = "block";
     }
 
-    // Botón de login
-    loginButton.addEventListener("click", function() {
+    // Botó de login
+    loginButton.addEventListener("click", function(e) {
+      e.preventDefault();
       window.netlifyIdentity.open("login");
     });
 
-    // Cuando el usuario hace login
+    // Quan l'usuari inicia sessió
     window.netlifyIdentity.on("login", function(user) {
-      console.log("Usuario logueado:", user.email);
       loginScreen.style.display = "none";
-      cargarCMS();
+      cmsContainer.style.display = "block";
+      // Recarregar el CMS
+      window.netlifyIdentity.close();
     });
 
     // Error de login
     window.netlifyIdentity.on("error", function(err) {
-      console.error("Error de login:", err);
       mostrarError("Usuari o contrasenya incorrectes");
     });
 
-    // Logout
+    // Quan tanca la sessió
     window.netlifyIdentity.on("logout", function() {
-      console.log("Usuario deslogueado");
       loginScreen.style.display = "block";
-      location.reload();
+      cmsContainer.style.display = "none";
     });
 
   } else {
     mostrarError("Error: No s'ha pogut carregar Netlify Identity");
-  }
-
-  function cargarCMS() {
-    // El CMS ya está cargado con el script de arriba
-    // Solo aseguramos que se vea bien
-    console.log("CMS cargado y listo");
   }
 });
 </script>
